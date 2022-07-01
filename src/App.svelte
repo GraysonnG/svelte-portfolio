@@ -26,6 +26,12 @@
     position: relative;
     width: min(calc(1920px - 1em), calc(100% - 10em));
     min-height: 100%;
-    overflow: hidden;
+  }
+
+  @media screen and (max-width: 600px) {
+    main {
+      width: 100vw;
+      padding: 0 1em;
+    }
   }
 </style>

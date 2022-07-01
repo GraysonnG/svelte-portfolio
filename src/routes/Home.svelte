@@ -7,9 +7,9 @@
 </script>
 
 <section transition:fly={{duration: 1000, x: 1000}} class:center={$state.loading}>
-  <SlideText text={"welcome to the portfolio of"} size={"1.5em"} animate={!$state.loading} delay={500} />
+  <SlideText text={"welcome to the portfolio of"} size={"1.5em"} animate={!$state.loading} delay={250} />
   <h1>Grayson Gullion</h1>
-  <SlideText text={"Software Developer & Weeb"} size={"2em"} animate={!$state.loading} delay={750} />
+  <SlideText text={"Software Developer & Weeb"} size={"2em"} animate={!$state.loading} delay={500} />
 </section>
 
 <style>
@@ -53,13 +53,19 @@
 
   @media screen and (max-width: 600px) {
     section {
+      top: calc(50% - 12em);
       justify-content: center;
       align-items: center;
+      max-width: 100%;
     }
 
-    h1 {
-      left: 50%;
-      transform: translateX(-50%);
+
+
+    .center h1, h1 {
+      left: 0;
+      transform: translateX(0);
+      text-align: center;
+      font-size: 11vw;
     }
   }
 </style>
