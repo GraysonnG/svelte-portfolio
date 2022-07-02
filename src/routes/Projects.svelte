@@ -1,43 +1,24 @@
 <script>
   import { fly } from "svelte/transition";
-  import infiniteSpire from "../assets/infinite-spire.jpg";
-  import wbiw from "../assets/wbiw-thumbnail.jpg";
-  import emts from "../assets/electro-mts-screenshot.png";
   import SlideText from "../lib/SlideText.svelte";
+  import { data } from "../content/projects";
 
 </script>
 
 <section transition:fly={{duration:1000, x: -1000}}>
-  <h2>My Projects</h2>
-
+  <h2>{data.title}</h2>
   <ul>
-    <li style="--animation-delay: 2137ms;">
-      <a href="https://whatblankiswatching.com/" target="_blank">
-        <img src={wbiw} alt="">
-        <div>
-          <SlideText text="What Blank is Watching" size="1.5em" />
-          <p>A website that uses Anilist's GraphQL api to compile all the anime I have ever watched. Written using Svelte and Typescript this website is performant and beautiful.</p>
-        </div>
-      </a>
-    </li>
-    <li style="--animation-delay: 0ms;">
-      <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=1610128058" target="_blank">
-        <img src={infiniteSpire} alt="">
-        <div>
-          <SlideText text="Infinite Spire" size="1.5em" />
-          <p>This is an expansion mod for Slay the Spire that adds lots of new content: New Relics, Cards, Events, Bosses.</p>
-        </div>
-      </a>
-    </li>
-    <li style="--animation-delay: 3379ms;">
-      <a href="https://github.com/GraysonnG/electro-mts" target="_blank">
-        <img src={emts} alt="">
-        <div>
-          <SlideText text="Electro ModTheSpire" size="1.5em" />
-          <p>This is an Electron application that can be used as a replacement to the mod launcher ModTheSpire which is used for Slay The Spire modding.</p>
-        </div>
-      </a>
-    </li>
+    {#each data.projects as project}
+      <li>
+        <a href={project.link} target="_blank">
+          <img src={project.img} alt="" />
+          <div>
+            <SlideText text={project.title} size="1.5em" />
+            <p>{project.description}</p>
+          </div>
+        </a>
+      </li>
+    {/each}
   </ul>
 </section>
 

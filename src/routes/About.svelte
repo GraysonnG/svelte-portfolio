@@ -1,16 +1,11 @@
 <script>
   import { fly } from "svelte/transition";
-  import headshot from "../assets/Head.png";
+  import { data } from "../content/about";
 </script>
 
 <section transition:fly={{duration:1000, x: -1000}}>
-  <img src={headshot} alt="">
-  <div>
-    <h2>Hello,</h2>
-    <p>I am a software developer based out of Virginia, USA. My goal is to develop powerful and modern software that will change the way we think about technology. As a WillowTree employeee I have worked with teams from Fox, Humana, and American Water, who are leading innovators in their industries.</p>
-    <br>
-    <p>I hope you find my portfolio interesting!</p>
-  </div>
+  <img src={data.img} alt="">
+  <div>{@html data.content}</div>
 </section>
 
 <style>
@@ -58,7 +53,7 @@
     flex-shrink: 0;
   }
 
-  h2 {
+  div :global(h2) {
     color: var(--color-highlight)
   }
 

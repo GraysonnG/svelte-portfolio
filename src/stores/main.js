@@ -1,4 +1,5 @@
 import { writable } from "svelte/store";
+import { ABOUT, CONTACT, HOME, PROJECTS } from "../constants";
 import About from "../routes/About.svelte";
 import Contact from "../routes/Contact.svelte";
 import Home from "../routes/Home.svelte";
@@ -7,7 +8,7 @@ import Projects from "../routes/Projects.svelte";
 export const state = writable({
   loading: true,
   screen: Home,
-  screenName: "home",
+  screenName: HOME,
   headerHidden: true,
 })
 
@@ -15,19 +16,19 @@ export const goToScreen = (screenId) => {
   state.update(oldstate => {
     switch (screenId) {
       default:
-      case "home":
+      case HOME:
         oldstate.screenName = screenId
         oldstate.screen = Home
         return oldstate
-      case "projects":
+      case PROJECTS:
         oldstate.screenName = screenId
         oldstate.screen = Projects
         return oldstate
-      case "about":
+      case ABOUT:
         oldstate.screenName = screenId
         oldstate.screen = About
         return oldstate
-      case "contact":
+      case CONTACT:
         oldstate.screenName = screenId
         oldstate.screen = Contact
         return oldstate
@@ -37,18 +38,18 @@ export const goToScreen = (screenId) => {
 
 export const goToNextScreen = () => {
   state.update(oldState => {
-    if (oldState.screenName == "home") {
-      oldState.screenName = "projects"
+    if (oldState.screenName == HOME) {
+      oldState.screenName = PROJECTS
       oldState.screen = Projects
       return oldState
     } 
-    if (oldState.screenName == "projects") {
-      oldState.screenName = "about"
+    if (oldState.screenName == PROJECTS) {
+      oldState.screenName = ABOUT
       oldState.screen = About
       return oldState
     }
-    if (oldState.screenName == "about") {
-      oldState.screenName = "contact"
+    if (oldState.screenName == ABOUT) {
+      oldState.screenName = CONTACT
       oldState.screen = Contact
       return oldState
     }
@@ -58,18 +59,18 @@ export const goToNextScreen = () => {
 
 export const goToPreviousScreen = () => {
   state.update(oldState => {
-    if (oldState.screenName == "projects") {
-      oldState.screenName = "home"
+    if (oldState.screenName == PROJECTS) {
+      oldState.screenName = HOME
       oldState.screen = Home
       return oldState
     }
-    if (oldState.screenName == "about") {
-      oldState.screenName = "projects"
+    if (oldState.screenName == ABOUT) {
+      oldState.screenName = PROJECTS
       oldState.screen = Projects
       return oldState
     }
-    if (oldState.screenName == "contact") {
-      oldState.screenName = "about"
+    if (oldState.screenName == CONTACT) {
+      oldState.screenName = ABOUT
       oldState.screen = About
       return oldState
     }

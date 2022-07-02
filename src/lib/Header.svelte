@@ -3,6 +3,7 @@
   import { goToScreen, state } from "../stores/main";
   import { fade } from "svelte/transition";
   import { clickOutside } from "../utils/clickoutside";
+  import { ABOUT, CONTACT, HOME, PROJECTS } from "../constants";
 
   export let show = false
 
@@ -35,21 +36,34 @@
     class:hidden={$state.headerHidden}
     transition:fade={{duration: 1000, delay: 2000}}>
     <ul>
-      <li class:selected={$state.screenName === "home"} on:click={onMenuClick("home")} class="grow">
+      <li 
+        class:selected={$state.screenName === HOME} 
+        on:click={onMenuClick(HOME)} 
+        class="grow">
         <span>Home</span>
       </li>
-      <li class:selected={$state.screenName === "projects"} on:click={onMenuClick("projects")}>
+      <li 
+        class:selected={$state.screenName === PROJECTS} 
+        on:click={onMenuClick(PROJECTS)}>
         <span>Projects</span>
       </li>
-      <li class:selected={$state.screenName === "about"} on:click={onMenuClick("about")}>
+      <li 
+        class:selected={$state.screenName === ABOUT} 
+        on:click={onMenuClick(ABOUT)}>
         <span>About</span>
       </li>
-      <li class:selected={$state.screenName === "contact"} on:click={onMenuClick("contact")}>
+      <li 
+        class:selected={$state.screenName === CONTACT}
+        on:click={onMenuClick(CONTACT)}>
         <span>Contact</span>
       </li>
     </ul>
   </header>
-  <button class:hidden={$state.headerHidden} on:click={openMenu}><i class="fa-solid fa-bars"></i></button>
+  <button 
+    class:hidden={$state.headerHidden} 
+    on:click={openMenu}>
+    <i class="fa-solid fa-bars"></i>
+  </button>
 {/if}
 
 <style>

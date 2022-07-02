@@ -1,6 +1,7 @@
 <script>
   import { fly } from "svelte/transition";
-  
+  import { data } from "../content/contact";
+
   let email;
   let discord;
 
@@ -11,37 +12,33 @@
         data.element.classList.remove("tooltip")
       }, 5000)
 
-      navigator.clipboard
-        .writeText(data.text)
+      navigator.clipboard.writeText(data.text)
     }
   }
-
-
 </script>
 
 <section transition:fly={{duration:1000, x: -1000}}>
-  <h2>Reach Out!</h2>
+  <h2>{data.title}</h2>
   <div>
     <p bind:this={email} on:click={onClickItem({
       element: email,
-      text: "graysongullion@gmail.com"
+      text: data.email.rawText
     })}>
-      <i class="fa-solid fa-inbox"></i>
-      <span>graysongullion<em>@gmail.com</em></span>
+      {@html data.email.icon}
+      <span>{@html data.email.title}</span>
     </p>
     <p>
-      <i class="fa-brands fa-linkedin"></i>
-      <a class="external" href="https://www.linkedin.com/in/william-grayson-gullion/" target="_blank">
-        <span>Grayson Gullion</span>
-        <i class="fa-solid fa-up-right-from-square"></i>
+      {@html data.linkedin.icon}
+      <a class="external" href={data.linkedin.url} target="_blank">
+        {@html data.linkedin.title}
       </a>
     </p>
     <p bind:this={discord} on:click={onClickItem({
       element: discord,
-      text: "Blank The Evil#6534"
+      text: data.discord.rawText
     })}>
-      <i class="fa-brands fa-discord"></i>
-      <span>Blank The Evil<em>#6534</em></span>
+      {@html data.discord.icon}
+      <span>{@html data.discord.title}</span>
     </p>
   </div>
 </section>
@@ -67,7 +64,7 @@
     gap: 1em;
   }
 
-  i {
+  p :global(i) {
     font-size: 1.5em;
     width: 1.5em;
     text-align: center;
@@ -86,7 +83,7 @@
     transition: all 250ms;
   }
 
-  a > i {
+  a > :global(i) {
     font-size: 1rem;
     color: var(--color-highlight)
   }
