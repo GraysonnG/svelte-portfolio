@@ -7,7 +7,9 @@
   <img src={headshot} alt="">
   <div>
     <h2>Hello,</h2>
-    <p>I am a software developer based out of Virginia, USA. My goal is to deliver powerful and modern software solutions.</p>
+    <p>I am a software developer based out of Virginia, USA. My goal is to develop powerful and modern software that will change the way we think about technology. As a WillowTree employeee I have worked with teams from Fox, Humana, and American Water, who are leading innovators in their industries.</p>
+    <br>
+    <p>I hope you find my portfolio interesting!</p>
   </div>
 </section>
 
@@ -25,7 +27,7 @@
   div {
     position: relative;
     font-size: max(0.75vw, 1rem);
-    max-width: 30rem;
+    max-width: 40rem;
   }
 
   div::after {
@@ -53,22 +55,25 @@
     object-fit: cover;
     box-shadow: 0 0 1em rgba(0,0,0,0.5);
     transform: translateY(0em);
+    flex-shrink: 0;
   }
 
   h2 {
     color: var(--color-highlight)
   }
 
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 900px) {
     section {
       top: 50%;
       max-width: 100%;
-      padding: 0 1em;
+      padding: 0 2em;
       transform: translateY(-50%);
       flex-direction: column;
       gap: 1em;
     }
+  }
 
+  @media screen and (max-width: 600px) {
     img {
       width: 15rem;
     }

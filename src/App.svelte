@@ -12,7 +12,7 @@
         oldState.loading = false;
         return oldState
       })
-    }, 2000)
+    }, 1500)
   })
 
   const onAppSwiped = (e) => {

@@ -93,7 +93,7 @@ body {
   background-color: rgb(35, 35, 35);
   background: url("./assets/background.webp");
   background-size: cover;
-  font-size: max(0.75vw, 0.75em);
+  font-size: min(max(0.75vw, 0.75em), 1.25em);
   max-height: 100vh;
   max-width: 100vw;
   overflow: hidden;
@@ -110,4 +110,9 @@ body {
 
 h2 {
   font-size: 3em;
+}
+
+em {
+  font-style: normal;
+  color: var(--color-highlight)
 }

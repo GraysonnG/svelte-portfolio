@@ -33,7 +33,7 @@
     use:clickOutside
     on:click_outside={closeMenu}
     class:hidden={$state.headerHidden}
-    transition:fade={{duration: 1000, delay: 1000}}>
+    transition:fade={{duration: 1000, delay: 2000}}>
     <ul>
       <li class:selected={$state.screenName === "home"} on:click={onMenuClick("home")} class="grow">
         <span>Home</span>

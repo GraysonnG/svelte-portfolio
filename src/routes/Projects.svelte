@@ -2,7 +2,8 @@
   import { fly } from "svelte/transition";
   import infiniteSpire from "../assets/infinite-spire.jpg";
   import wbiw from "../assets/wbiw-thumbnail.jpg";
-import SlideText from "../lib/SlideText.svelte";
+  import emts from "../assets/electro-mts-screenshot.png";
+  import SlideText from "../lib/SlideText.svelte";
 
 </script>
 
@@ -11,24 +12,31 @@ import SlideText from "../lib/SlideText.svelte";
 
   <ul>
     <li style="--animation-delay: 2137ms;">
-      <img src={wbiw} alt="">
-      <div>
-        <SlideText text="What Blank is Watching" size="1.5em" nocaps />
-        <p>A website that uses Anilist's GraphQL api to compile all the anime I have ever watched. Written using Svelte and Typescript this website is performant and beautiful.</p>
-      </div>
+      <a href="https://whatblankiswatching.com/" target="_blank">
+        <img src={wbiw} alt="">
+        <div>
+          <SlideText text="What Blank is Watching" size="1.5em" />
+          <p>A website that uses Anilist's GraphQL api to compile all the anime I have ever watched. Written using Svelte and Typescript this website is performant and beautiful.</p>
+        </div>
+      </a>
     </li>
     <li style="--animation-delay: 0ms;">
-      <img src={infiniteSpire} alt="">
-      <div>
-        <SlideText text="Infinite Spire" size="1.5em" delay={500} nocaps />
-        <p>This is an expansion mod for Slay the Spire that adds lots of new content: New Relics, Cards, Events, Bosses.</p>
-      </div>
+      <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=1610128058" target="_blank">
+        <img src={infiniteSpire} alt="">
+        <div>
+          <SlideText text="Infinite Spire" size="1.5em" />
+          <p>This is an expansion mod for Slay the Spire that adds lots of new content: New Relics, Cards, Events, Bosses.</p>
+        </div>
+      </a>
     </li>
     <li style="--animation-delay: 3379ms;">
-      <img src="https://cataas.com/cat" alt="">
-      <div>
-        <SlideText text="Some Other Project" size="1.5em" delay={1000} nocaps />
-      </div>
+      <a href="https://github.com/GraysonnG/electro-mts" target="_blank">
+        <img src={emts} alt="">
+        <div>
+          <SlideText text="Electro ModTheSpire" size="1.5em" />
+          <p>This is an Electron application that can be used as a replacement to the mod launcher ModTheSpire which is used for Slay The Spire modding.</p>
+        </div>
+      </a>
     </li>
   </ul>
 </section>
@@ -44,6 +52,7 @@ import SlideText from "../lib/SlideText.svelte";
   ul {
     list-style: none;
     margin: 0;
+    margin-top: 2em;
     padding: 0;
     display: flex;
     gap: 1em;
@@ -62,12 +71,9 @@ import SlideText from "../lib/SlideText.svelte";
     animation-direction: alternate;
     animation-delay: var(--animation-delay);
     aspect-ratio: 3/2;
-    padding: 0.33em;
     border: 1px solid transparent;
     transition: all 500ms;
-    display: flex;
-    gap: 1em;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: transparent;
   }
 
   div {
@@ -75,13 +81,24 @@ import SlideText from "../lib/SlideText.svelte";
     font-size: 1rem;
   }
 
-  li > div > :global(div) {
+  li > a > div > :global(div) {
     color: white;
   }
 
   p {
+    width: 100%;
     display: inline-block;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  a {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    gap: 1em;
+    position: relative;
+    height: 12vh;
+    padding: 0.33em;
   }
 
   li::after {
@@ -111,16 +128,16 @@ import SlideText from "../lib/SlideText.svelte";
   }
 
   li:hover {
-    transform: translateX(2.5em) scale(1.1);
+    transform: scale(1.025);
     background-color: rgba(160, 150, 255, 0.2) !important;
   }
 
-  li:hover > div > :global(div) {
+  li:hover > a > div > :global(div) {
     color: var(--color-highlight);
   }
 
   li:active {
-    transform: translateX(1.2em) scale(1.05);
+    transform: scale(1.013);
   }
 
 
@@ -151,16 +168,12 @@ import SlideText from "../lib/SlideText.svelte";
     section {
       top: 50%;
       max-width: 100%;
-      padding: 0 1em;
+      padding: 0 2em;
       transform: translateY(-50%);
     }
 
     div {
       font-size: 1em;
-    }
-
-    ul {
-      margin-top: 2em;
     }
 
     li:hover {
@@ -174,11 +187,11 @@ import SlideText from "../lib/SlideText.svelte";
 
   @keyframes pulse {
     from {
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: transparent;
     }
 
     to {
-      background-color: rgba(255, 255, 255, 0.2);
+      background-color: rgba(255, 255, 255, 0.025);
     }
   }
 </style>
