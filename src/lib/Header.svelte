@@ -1,24 +1,28 @@
 <script>
   // @ts-nocheck
-  import { goToScreen } from "../stores/main";
+  import { goToScreen, state } from "../stores/main";
   import { fade } from "svelte/transition";
   import { clickOutside } from "../utils/clickoutside";
 
   export let show = false
-  export let hidden = true
 
   const closeMenu = () => {
-    hidden = true
+    state.update(oldstate => {
+      oldstate.headerHidden = true
+      return oldstate
+    })
   }
 
   const openMenu = () => {
-    hidden = false
+    state.update(oldstate => {
+      oldstate.headerHidden = false
+      return oldstate
+    })
   }
 
   const onMenuClick = (itemId) => {
     return () => {
-      hidden = true
-
+      closeMenu()
       goToScreen(itemId)
     }
   }
@@ -28,24 +32,24 @@
   <header
     use:clickOutside
     on:click_outside={closeMenu}
-    class:hidden 
+    class:hidden={$state.headerHidden}
     transition:fade={{duration: 1000, delay: 1000}}>
     <ul>
-      <li on:click={onMenuClick("home")} class="grow">
+      <li class:selected={$state.screenName === "home"} on:click={onMenuClick("home")} class="grow">
         <span>Home</span>
       </li>
-      <li on:click={onMenuClick("projects")}>
+      <li class:selected={$state.screenName === "projects"} on:click={onMenuClick("projects")}>
         <span>Projects</span>
       </li>
-      <li on:click={onMenuClick("about")}>
+      <li class:selected={$state.screenName === "about"} on:click={onMenuClick("about")}>
         <span>About</span>
       </li>
-      <li on:click={onMenuClick("contact")}>
+      <li class:selected={$state.screenName === "contact"} on:click={onMenuClick("contact")}>
         <span>Contact</span>
       </li>
     </ul>
   </header>
-  <button class:hidden on:click={openMenu}>Yeet</button>
+  <button class:hidden={$state.headerHidden} on:click={openMenu}><i class="fa-solid fa-bars"></i></button>
 {/if}
 
 <style>
@@ -82,9 +86,20 @@
     margin-right: auto;
   }
 
+  li.selected {
+    color: var(--color-highlight);
+    border-bottom: 2px solid var(--color-highlight);
+    transform: translateY(-0.5rem);
+  }
+
   button {
+    transition: all 250ms;
     position: fixed;
     top: -100%;
+  }
+
+  i {
+    font-size: 3rem;
   }
 
   @media screen and (max-width: 600px) {
@@ -102,11 +117,18 @@
       gap: 0.5em;
       flex-direction: column;
       padding: 1em 0;
-      
+    }
+
+    li:hover {
+      transform: translateY(0);
     }
 
     li.grow {
       margin-right: 0;
+    }
+
+    li.selected {
+      transform: translateY(0);
     }
 
     span {

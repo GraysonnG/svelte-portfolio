@@ -79,8 +79,8 @@ select {
 }
 
 ::selection, ::-moz-selection {
-  background: var(--color-highlight);
-  color: black !important;
+  background: rgba(160, 150, 255, 0.43);
+  color: color !important;
 }
 
 * {

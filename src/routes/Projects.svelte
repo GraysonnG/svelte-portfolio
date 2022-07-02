@@ -1,6 +1,8 @@
 <script>
   import { fly } from "svelte/transition";
-  import infiniteSpire from "../assets/image.jpg";
+  import infiniteSpire from "../assets/infinite-spire.jpg";
+  import wbiw from "../assets/wbiw-thumbnail.jpg";
+import SlideText from "../lib/SlideText.svelte";
 
 </script>
 
@@ -8,24 +10,24 @@
   <h2>My Projects</h2>
 
   <ul>
-    <li>
-      <img src="https://cataas.com/cat" alt="">
+    <li style="--animation-delay: 2137ms;">
+      <img src={wbiw} alt="">
       <div>
-        <h3>What Blank is Watching</h3>
+        <SlideText text="What Blank is Watching" size="1.5em" nocaps />
         <p>A website that uses Anilist's GraphQL api to compile all the anime I have ever watched. Written using Svelte and Typescript this website is performant and beautiful.</p>
       </div>
     </li>
-    <li>
+    <li style="--animation-delay: 0ms;">
       <img src={infiniteSpire} alt="">
       <div>
-        <h3>Infinite Spire</h3>
+        <SlideText text="Infinite Spire" size="1.5em" delay={500} nocaps />
         <p>This is an expansion mod for Slay the Spire that adds lots of new content: New Relics, Cards, Events, Bosses.</p>
       </div>
     </li>
-    <li>
+    <li style="--animation-delay: 3379ms;">
       <img src="https://cataas.com/cat" alt="">
       <div>
-        <h3>3rd Project</h3>
+        <SlideText text="Some Other Project" size="1.5em" delay={1000} nocaps />
       </div>
     </li>
   </ul>
@@ -51,8 +53,14 @@
   li {
     position: relative;
     cursor: pointer;
-    height: 14vh;
-    max-width: 50em;
+    height: 12vh;
+    max-width: 60rem;
+    animation-name: pulse;
+    animation-duration: 5s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-delay: var(--animation-delay);
     aspect-ratio: 3/2;
     padding: 0.33em;
     border: 1px solid transparent;
@@ -64,13 +72,11 @@
 
   div {
     overflow: hidden;
-    font-size: max(0.75vw, 1rem)
+    font-size: 1rem;
   }
 
-  h3 {
+  li > div > :global(div) {
     color: white;
-    font-size: 1.5em;
-    transition: all 500ms;
   }
 
   p {
@@ -105,30 +111,34 @@
   }
 
   li:hover {
-    transform: scale(1.1);
-    background-color: rgba(160, 150, 255, 0.1);
+    transform: translateX(2.5em) scale(1.1);
+    background-color: rgba(160, 150, 255, 0.2) !important;
   }
 
-  li:hover h3 {
+  li:hover > div > :global(div) {
     color: var(--color-highlight);
+  }
+
+  li:active {
+    transform: translateX(1.2em) scale(1.05);
   }
 
 
   li:hover::after {
-    top: -0.25em;
-    right: -0.25em;
+    top: -0.5em;
+    right: -0.5em;
     opacity: 1;
   }
 
   li:hover::before {
-    bottom: -0.25em;
-    left: -0.25em;
+    bottom: -0.5em;
+    left: -0.5em;
     opacity: 1;
   }
 
   img {
     position: relative;
-    border-radius: 0.25em;
+    border-radius: 0.3rem;
     overflow: hidden;
     height: 100%;
     aspect-ratio: 1/1;
@@ -139,9 +149,14 @@
 
   @media screen and (max-width: 600px) {
     section {
-      top: 10em;
+      top: 50%;
       max-width: 100%;
       padding: 0 1em;
+      transform: translateY(-50%);
+    }
+
+    div {
+      font-size: 1em;
     }
 
     ul {
@@ -150,6 +165,20 @@
 
     li:hover {
       transform: scale(1.02);
+    }
+
+    li:active {
+      transform: scale(1.01);
+    }
+  }
+
+  @keyframes pulse {
+    from {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    to {
+      background-color: rgba(255, 255, 255, 0.2);
     }
   }
 </style>

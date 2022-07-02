@@ -5,6 +5,7 @@
   export let delay = 0
   export let fromBottom = false
   export let animate = true
+  export let nocaps = false
 
   const words = text.split(" ")
   const randomDelay = () => (duration + (Math.random() * duration) + delay).toFixed(0)
@@ -15,6 +16,7 @@
   {#if animate}
     {#each words as word}
       <span class="word" style="
+        {nocaps ? "" : "text-transform: uppercase;"}
         --transition-delay: {randomDelay()}ms;
         --transition-duration: {duration}ms;"
       >{word}&nbsp;</span>
@@ -25,7 +27,6 @@
 
 <style>
   .text {
-    text-transform: uppercase;
     overflow: hidden;
     position: relative;
     display: inline-block;
@@ -40,7 +41,7 @@
     animation-fill-mode: forwards;
     animation-delay: var(--transition-delay);
     position: relative;
-    transition: top 100ms;
+    transition: all 100ms;
     transform: translateY(0);
   }
 
