@@ -74,13 +74,53 @@ select {
 }
 
 /* Global Styles */
+@font-face {
+  font-family: 'Anek Latin';
+  src: url("./assets/fonts/AnekLatin/AnekLatin-ExtraLight.ttf");
+  font-style: normal;
+  font-weight: 100;
+}
+
+@font-face {
+  font-family: 'Anek Latin';
+  src: url("./assets/fonts/AnekLatin/AnekLatin-Light.ttf");
+  font-style: normal;
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: 'Anek Latin';
+  src: url("./assets/fonts/AnekLatin/AnekLatin-Regular.ttf");
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'Anek Latin';
+  src: url("./assets/fonts/AnekLatin/AnekLatin-Bold.ttf");
+  font-style: normal;
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: 'Anek Latin';
+  src: url("./assets/fonts/AnekLatin/AnekLatin-ExtraBold.ttf");
+  font-style: normal;
+  font-weight: bolder;
+}
+
 :root {
   --color-highlight: rgba(160, 150, 255);
 }
 
-::selection, ::-moz-selection {
+::selection, ::-moz-selection, ::-webkit-selection {
   background: rgba(160, 150, 255, 0.43);
-  color: color !important;
+  color: white !important;
+}
+
+:is(h1, h2, h3, p, a, div, span, em, br)::selection {
+  background: rgba(160, 150, 255, 0.43);
+  color: white !important;
 }
 
 * {

@@ -2,6 +2,7 @@
   import { fly } from "svelte/transition";
 
   import SlideText from "../lib/SlideText.svelte";
+  import Technologies from "../lib/Technologies.svelte";
   import { state } from "../stores/main";
 
 </script>
@@ -10,6 +11,7 @@
   <SlideText text={"Welcome To The <em>Portfolio</em> of"} size={"1.5em"} animate={!$state.loading} delay={550} />
   <h1>Grayson Gullion</h1>
   <SlideText text={"Platform Software Engineer & <em>Weeb</em>"} size={"1.5em"} animate={!$state.loading} delay={700} />
+  <Technologies />
 </section>
 
 <style>
@@ -30,7 +32,7 @@
     display: inline-block;
     line-height: 1;
     font-size: 6em;
-    font-weight: bold;
+    font-weight: 100;
     left: 0;
     top: -0.25rem;
     transform: translateX(0%);
@@ -38,7 +40,7 @@
     transition: all 1000ms;
   }
 
-  section :global(:not(h1)) {
+  section > :global(div) {
     opacity: 1;
     transition: all 1000ms;
   }
@@ -48,7 +50,7 @@
     transform: translateX(-50%);
   }
 
-  .center :global(:not(h1)) {
+  .center > :global(div) {
     opacity: 0;
   }
 

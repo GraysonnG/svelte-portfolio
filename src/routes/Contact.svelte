@@ -40,6 +40,12 @@
       {@html data.discord.icon}
       <span>{@html data.discord.title}</span>
     </p>
+    <p>
+      {@html data.github.icon}
+      <a class="external" href={data.github.url} target="_blank">
+        {@html data.github.title}
+      </a>
+    </p>
   </div>
 </section>
 

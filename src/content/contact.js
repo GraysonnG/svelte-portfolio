@@ -14,5 +14,10 @@ export const data = {
     title: `Blank The Evil<em>#6534</em>`,
     rawText: `Blank The Evil#6534`,
     icon: `<i class="fa-brands fa-discord"></i>`,
-  }
+  },
+  github: {
+    title: `<span>GraysonnG</span><i class="fa-solid fa-up-right-from-square"></i>`,
+    url: "https://github.com/GraysonnG",
+    icon: `<i class="fa-brands fa-github"></i>`
+  },
 }
