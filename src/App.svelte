@@ -4,7 +4,7 @@
   import { swipe } from "svelte-gestures";
   import Header from "./lib/Header.svelte";
   import Loading from "./lib/Loading.svelte";
-  import { state } from "./stores/main";
+  import { goToNextScreen, goToPreviousScreen, state } from "./stores/main";
 
   onMount(() => {
     setTimeout(() => {
@@ -28,6 +28,17 @@
         oldState.headerHidden = true
         return oldState
       })
+    }
+  }
+
+  window.onkeydown = (e) => {
+    switch (e.key) {
+      case "ArrowLeft":
+        goToPreviousScreen()
+        break;
+      case "ArrowRight":
+        goToNextScreen()
+        break;
     }
   }
 </script>

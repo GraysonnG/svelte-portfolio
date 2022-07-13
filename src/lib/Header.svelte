@@ -3,9 +3,12 @@
   import { goToScreen, state } from "../stores/main";
   import { fade } from "svelte/transition";
   import { clickOutside } from "../utils/clickoutside";
-  import { ABOUT, CONTACT, HOME, PROJECTS } from "../constants";
+  import { data } from "../content/header";
+  import { onMount } from "svelte";
 
   export let show = false
+  
+  let underline
 
   const closeMenu = () => {
     state.update(oldstate => {
@@ -27,6 +30,48 @@
       goToScreen(itemId)
     }
   }
+
+  const moveToRect = (rect) => {
+    if (rect && underline) {
+      underline.style.left = `${rect.left}px`;
+      underline.style.width = `${rect.width}px`;
+      underline.style.height = `${rect.height}px`;
+      underline.style.top = `${rect.top}px`;
+      underline.style.opacity = `1`;
+    }
+  }
+
+  const moveUnderline = (e) => {
+    const rect = e.target.getBoundingClientRect()
+    moveToRect(rect)
+  }
+
+  const moveUnderlineToSelected = () => {
+    try {
+      const rect = document.querySelector(`header .selected`).getBoundingClientRect()
+      moveToRect(rect)
+    } catch (e) {}
+  }
+
+  const moveUnderlineToElement = (element) => {
+    if (element) {
+      const rect = element.getBoundingClientRect()
+      moveToRect(rect)
+    }
+  }
+
+  window.onresize = () => {
+    moveUnderlineToSelected()
+  }
+
+  onMount(() => {
+    moveUnderlineToSelected()
+
+    state.subscribe(st => {
+      const selectedElement = document.querySelector(`header li[data-id='${st.screenName}']`)
+      moveUnderlineToElement(selectedElement)
+    })
+  })
 </script>
 
 {#if show}
@@ -34,29 +79,22 @@
     use:clickOutside
     on:click_outside={closeMenu}
     class:hidden={$state.headerHidden}
+    on:introend={() => {
+      moveUnderlineToSelected()
+    }}
     transition:fade={{duration: 1000, delay: 2000}}>
-    <ul>
-      <li 
-        class:selected={$state.screenName === HOME} 
-        on:click={onMenuClick(HOME)} 
-        class="grow">
-        <span>Home</span>
-      </li>
-      <li 
-        class:selected={$state.screenName === PROJECTS} 
-        on:click={onMenuClick(PROJECTS)}>
-        <span>Projects</span>
-      </li>
-      <li 
-        class:selected={$state.screenName === ABOUT} 
-        on:click={onMenuClick(ABOUT)}>
-        <span>About</span>
-      </li>
-      <li 
-        class:selected={$state.screenName === CONTACT}
-        on:click={onMenuClick(CONTACT)}>
-        <span>Contact</span>
-      </li>
+    <div class="underline" bind:this={underline}></div>
+    <ul on:mouseleave={moveUnderlineToSelected}>
+      {#each data.pages as item (item.id)}
+        <li
+          class:selected={$state.screenName === item.id}
+          on:click={onMenuClick(item.id)}
+          on:mouseenter={moveUnderline}
+          data-id={item.id}
+          class:grow={item.grow}>
+          <span>{ item.name }</span>
+        </li>
+      {/each}
     </ul>
   </header>
   <button 
@@ -71,9 +109,25 @@
     width: 100%;
     transition: all 250ms;
     transform-origin: top;
+    position: relative;
+  }
+
+  button {
+    z-index: 20000;
+  }
+
+  .underline {
+    height: 2px;
+    background-color: var(--color-highlight);
+    position: fixed;
+    transition: all 200ms;
+    opacity: 0;
+    z-index: 1;
+    border-radius: 100px;
   }
 
   ul {
+    position: relative;
     font-size: 2em;
     list-style: none;
     margin: 0;
@@ -81,6 +135,7 @@
     display: flex;
     gap: 2em;
     padding: 2em 0;
+    z-index: 2;
   }
 
   li {
@@ -88,12 +143,13 @@
     border-bottom: 2px solid transparent;
     transition: all 500ms;
     user-select: none;
+    padding: 0.5rem 2rem;
+    border-radius: 100px;
+    border: 1px solid transparent;
   }
 
   li:hover {
-    color: var(--color-highlight);
-    border-bottom: 2px solid var(--color-highlight);
-    transform: translateY(-0.5rem);
+    color: white;
   }
 
   li.grow {
@@ -101,9 +157,7 @@
   }
 
   li.selected {
-    color: var(--color-highlight);
-    border-bottom: 2px solid var(--color-highlight);
-    transform: translateY(-0.5rem);
+    color: white;
   }
 
   button {
@@ -119,18 +173,62 @@
   @media screen and (max-width: 600px) {
     header {
       left: 0;
-      top: 0;
+      top: 1em;
       max-width: 100%;
       position: fixed;
-      background-color: rgba(0,0,0,0.8);
       z-index: 10000;
       
     }
 
+    .underline {
+      display: none;
+    }
+
     ul {
-      gap: 0.5em;
+      gap: 0em;
       flex-direction: column;
-      padding: 1em 0;
+      padding: 0;
+    }
+
+    li {
+      position: relative;
+      border: none;
+      padding: 0.25em 0;
+      border-radius: 0;
+      border-bottom: 2px solid transparent;
+    }
+
+    li:nth-child(-n+6) {
+      left: 0;
+      transition: all 250ms;
+    }
+
+    li:nth-child(1) {
+      transition-delay: 0ms;
+    }
+
+    li:nth-child(2) {
+      transition-delay: 100ms;
+    }
+
+    li:nth-child(3) {
+      transition-delay: 200ms;
+    }
+
+    li:nth-child(4) {
+      transition-delay: 300ms;
+    }
+
+    li:nth-child(5) {
+      transition-delay: 400ms;
+    }
+
+    li:nth-child(6) {
+      transition-delay: 500ms;
+    }
+
+    .hidden li {
+      left: -100%;
     }
 
     li:hover {
@@ -143,14 +241,24 @@
 
     li.selected {
       transform: translateY(0);
+      border: none;
+    }
+
+    li.selected::before {
+      display: inline-block;
+      font-weight: 900;
+      font-family: "Font Awesome 6 Free";
+      content: "\f105";
+      margin-left: 1em;
+      color: var(--color-highlight);
     }
 
     span {
       margin-left: 1em;
     }
 
-    header.hidden {
-      transform: scaleY(0);
+    .selected span {
+      margin-left: 0.5em;
     }
 
     button.hidden {
