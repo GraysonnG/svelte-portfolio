@@ -3,7 +3,7 @@
   <i title="CSS 3" class="fa-brands fa-css3"></i>
   <i title="Javascript" class="fa-brands fa-js-square"></i>
   <i title="React" class="fa-brands fa-react"></i>
-  <i title="Vue" class="fa-brands fa-vuejs"></i>
+  <!-- <i title="Vue" class="fa-brands fa-vuejs"></i> -->
   <i title="Android" class="fa-brands fa-android"></i>
 </div>
 

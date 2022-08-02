@@ -4,6 +4,7 @@
   import { swipe } from "svelte-gestures";
   import Header from "./lib/Header.svelte";
   import Loading from "./lib/Loading.svelte";
+  import VfxLayer from "./lib/VFXLayer.svelte";
   import { goToNextScreen, goToPreviousScreen, state } from "./stores/main";
 
   onMount(() => {
@@ -52,6 +53,7 @@
   <Header show={!$state.loading} />
   <svelte:component this={$state.screen} />
   <Loading />
+  <VfxLayer />
 </main>
 
 <style>
@@ -59,6 +61,7 @@
     position: relative;
     width: min(calc(1920px - 1em), calc(100% - 10em));
     min-height: 100%;
+    z-index: 2;
   }
 
   @media screen and (max-width: 600px) {

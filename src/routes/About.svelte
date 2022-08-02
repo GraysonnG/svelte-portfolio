@@ -5,7 +5,7 @@
 
 <section transition:fly={{duration:1000, x: -1000}}>
   <img src={data.img} alt="">
-  <div>{@html data.content}</div>
+  <div transition:fly={{delay: 750, duration:1000, x: -50}}>{@html data.content}</div>
 </section>
 
 <style>
@@ -17,12 +17,14 @@
     display: flex;
     align-items: center;
     gap: 6em;
+    perspective: 1000px;
   }
 
   div {
     position: relative;
     font-size: max(0.75vw, 1rem);
     max-width: 40rem;
+    transform: rotateY(-7deg)
   }
 
   div::after {
@@ -30,10 +32,29 @@
     position: absolute;
     bottom: -3em;
     right: -2em;
-    width: 5rem;
-    border-bottom: 1px solid var(--color-highlight);
-    border-right: 1px solid var(--color-highlight);
-    aspect-ratio: 1/1;
+    width: 10rem;
+    background-color: var(--color-highlight);
+    border-radius: 50%;
+    aspect-ratio: 1;
+    opacity: 0.3;
+    z-index: -1;
+    animation: float 5s ease-in-out 1s infinite alternate;
+    pointer-events: none;
+  }
+
+  div::before {
+    content: "";
+    position: absolute;
+    bottom: -1em;
+    right: 2em;
+    width: 20rem;
+    background-color: var(--color-highlight);
+    border-radius: 50%;
+    aspect-ratio: 1;
+    opacity: 0.2;
+    z-index: -1;
+    animation: float 5s ease-in-out 3s infinite alternate;
+    pointer-events: none;
   }
 
   img {

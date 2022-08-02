@@ -2,14 +2,13 @@
   import { fly } from "svelte/transition";
   import SlideText from "../lib/SlideText.svelte";
   import { data } from "../content/projects";
-
 </script>
 
-<section transition:fly={{duration:1000, x: -1000}}>
+<section transition:fly={{duration: 1000, x: -1000}}>
   <h2>{data.title}</h2>
   <ul>
-    {#each data.projects as project}
-      <li>
+    {#each data.projects as project, index}
+      <li transition:fly={{duration: 300, delay: 750 + (index * 200), x: -50}}>
         <a href={project.link} target="_blank">
           <img src={project.img} alt="" />
           <div>
@@ -55,6 +54,7 @@
     border: 1px solid transparent;
     transition: all 500ms;
     background-color: transparent;
+    border-radius: 0.5em;
   }
 
   div {
@@ -82,30 +82,40 @@
     padding: 0.33em;
   }
 
+  li::after, li::before {
+    content: "";
+    position: absolute;
+  }
+
   li::after {
     content: "";
     position: absolute;
     height: 25%;
     aspect-ratio: 1/1;
-    right: 20%;
-    top: 20%;
-    border-right: 1px solid var(--color-highlight);
-    border-top: 1px solid var(--color-highlight);
-    transition: all 500ms;
+    border-right: 2px solid var(--color-highlight);
+    border-top: 2px solid var(--color-highlight);
+    transition: all 250ms;
     opacity: 0;
+
+    top: calc(50%);
+    transform: translateX(0) translateY(-50%) rotate(45deg) scale(.5);
+    right: 50%;
   }
 
   li::before {
     content: "";
     position: absolute;
-    height: 25%;
+    height: 50%;
     aspect-ratio: 1/1;
-    left: 20%;
-    bottom: 20%;
-    border-left: 1px solid var(--color-highlight);
-    border-bottom: 1px solid var(--color-highlight);
-    transition: all 500ms;
+    border-right: 2px solid transparent;
+    border-bottom: 2px solid var(--color-highlight);
+    transition: all 250ms;
     opacity: 0;
+
+    transform-origin: bottom right;
+    top: calc(50%);
+    transform: translateX(0) translateY(calc(-100% + 1px)) scale(.5);
+    right: 50%;
   }
 
   li:hover {
@@ -123,15 +133,11 @@
 
 
   li:hover::after {
-    top: -0.5em;
-    right: -0.5em;
-    opacity: 1;
+    animation: pointer-arrow 1s ease-in 0ms infinite forwards;
   }
 
   li:hover::before {
-    bottom: -0.5em;
-    left: -0.5em;
-    opacity: 1;
+    animation: pointer-line 1s ease-in 0ms infinite forwards;
   }
 
   img {
@@ -173,6 +179,52 @@
 
     to {
       background-color: rgba(255, 255, 255, 0.025);
+    }
+  }
+
+  @keyframes pointer-arrow {
+    0% {
+      opacity: 0;
+      top: calc(50%);
+      transform: translateX(0) translateY(-50%) rotate(45deg) scale(.5);
+      right: 50%;
+    }
+
+    50%, 90% {
+      top: calc(50%);
+      transform: translateX(-1em) translateY(-50%) rotate(45deg) scale(1);
+      right: 0;
+      opacity: 1;
+    }
+
+    100% {
+      top: calc(50%);
+      transform: translateX(3em) translateY(-50%) rotate(45deg) scale(1);
+      right: 0;
+      opacity: 0;
+    }
+  }
+
+  @keyframes pointer-line {
+    0% {
+      opacity: 0;
+      top: calc(50%);
+      transform: translateX(0) translateY(calc(-100% + 1px)) scale(.5);
+      right: 50%;
+    }
+
+    50%, 90% {
+      top: calc(50%);
+      transform: translateX(calc(-1em + 0.5em - 3px)) translateY(calc(-100% + 1px)) scale(1);
+      right: 0;
+      opacity: 1;
+    }
+
+    100% {
+      top: calc(50%);
+      transform: translateX(calc(3em + 0.5em - 3px)) translateY(calc(-100% + 1px)) scale(1);
+      right: 0;
+      opacity: 0;
     }
   }
 </style>

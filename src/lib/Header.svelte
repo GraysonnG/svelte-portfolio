@@ -124,6 +124,7 @@
     opacity: 0;
     z-index: 1;
     border-radius: 100px;
+    pointer-events: none;
   }
 
   ul {
@@ -134,7 +135,7 @@
     padding: 0;
     display: flex;
     gap: 2em;
-    padding: 2em 0;
+    margin: 2em 0;
     z-index: 2;
   }
 
@@ -188,6 +189,7 @@
       gap: 0em;
       flex-direction: column;
       padding: 0;
+      border: none;
     }
 
     li {
@@ -195,7 +197,7 @@
       border: none;
       padding: 0.25em 0;
       border-radius: 0;
-      border-bottom: 2px solid transparent;
+      border: none !important;
     }
 
     li:nth-child(-n+6) {

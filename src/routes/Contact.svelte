@@ -19,7 +19,7 @@
 
 <section transition:fly={{duration:1000, x: -1000}}>
   <h2>{data.title}</h2>
-  <div>
+  <div transition:fly={{duration: 1000, delay: 750, x: -50}}>
     <p bind:this={email} on:click={onClickItem({
       element: email,
       text: data.email.rawText
@@ -135,6 +135,10 @@
     opacity: 1;
   }
 
+  section :global(em) {
+    animation: flash 5s ease-in-out infinite alternate;
+  }
+
   @media screen and (max-width: 600px) {
     section {
       top: 50%;
@@ -150,6 +154,57 @@
 
     p {
       margin: 0 auto;
+    }
+
+    
+    p {
+      position: relative;
+      left: -100%;
+      animation: flyIn 1s ease-in 1 forwards;
+    }
+
+    p:nth-child(1) {
+      animation-delay: 250ms;
+    }
+
+    p:nth-child(2) {
+      animation-delay: 500ms;
+    }
+
+    p:nth-child(3) {
+      animation-delay: 750ms;
+    }
+
+    p:nth-child(4) {
+      animation-delay: 1000ms;
+    }
+
+    p:nth-child(5) {
+      animation-delay: 1250ms;
+    }
+
+    p:nth-child(6) {
+      animation-delay: 1500ms;
+    }
+  }
+
+  @keyframes flash {
+    from {
+      color: color(--color-highlight); 
+    }
+
+    to {
+      color: white;
+    }
+  }
+
+  @keyframes flyIn {
+    from {
+      left: -100%;
+    }
+
+    to {
+      left: 0;
     }
   }
 </style>
