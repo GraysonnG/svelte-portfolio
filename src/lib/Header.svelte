@@ -5,6 +5,7 @@
   import { clickOutside } from "../utils/clickoutside";
   import { data } from "../content/header";
   import { onMount } from "svelte";
+  import { isMobile } from "../utils/mobilehelper";
 
   export let show = false
   
@@ -72,6 +73,8 @@
       moveUnderlineToElement(selectedElement)
     })
   })
+
+  $: mobile = isMobile()
 </script>
 
 {#if show}
@@ -102,6 +105,9 @@
     on:click={openMenu}>
     <i class="fa-solid fa-bars"></i>
   </button>
+  {#if mobile && !$state.headerHidden}
+    <div transition:fade={{duration: 500}} class="underlay"></div>
+  {/if}
 {/if}
 
 <style>
@@ -181,6 +187,14 @@
       
     }
 
+    .underlay {
+      position: fixed;
+      z-index: 9999;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(2px);
+    }
+
     .underline {
       display: none;
     }
@@ -189,6 +203,7 @@
       gap: 0em;
       flex-direction: column;
       padding: 0;
+      margin: 0;
       border: none;
     }
 
