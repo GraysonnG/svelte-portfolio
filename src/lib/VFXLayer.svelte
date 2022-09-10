@@ -1,21 +1,49 @@
 <script>
   import CircleEffect from "./CircleEffect.svelte";
-
+  import icon from "../assets/icon-purple.png";
 
 </script>
 
 <div class="wrapper">
-  <div class="square halftone"></div>
+  <!-- <div class="square halftone"></div> -->
+
+  <img src={icon} alt="">
 
   <CircleEffect
-    color="rgba(255,255,255,0.3)"
-    size="7em" 
+    color="rgba(255,255,255,0.5)"
+    size="7em"
+    duration="40s"
     />
   <CircleEffect 
     size="5em"
     color="rgba(255,255,255,0.5)"
     quadrants={["top-left", "bottom-right"]}
     reverse
+    duration="40s"
+    />
+  <CircleEffect 
+    size="6.7em"
+    color="var(--color-highlight)"
+    quadrants={["bottom-right"]}
+    duration="20s"
+    />
+  <CircleEffect 
+    size="4.7em"
+    color="var(--color-highlight)"
+    quadrants={["top-right"]}
+    duration="20s"
+    />
+  <CircleEffect 
+    size="7.3em"
+    color="white"
+    quadrants={["top-left"]}
+    duration="80s"
+    />
+  <CircleEffect 
+    size="5.3em"
+    color="white"
+    quadrants={["bottom-left"]}
+    duration="80s"
     />
 </div>
 
@@ -24,6 +52,14 @@
     position: fixed;
     inset: 0;
     z-index: -1;
+  }
+
+  img {
+    position: absolute;
+    right: 15%;
+    bottom: 15%;
+    height: 7em;
+    transform: translate(50%, 50%);
   }
 
   .square {
@@ -67,6 +103,10 @@
   }
 
   @media screen and (max-width: 600px) {
+    .wrapper {
+      font-size: 0.75em;
+    }
+
     .square {
       height: 8em;
     }

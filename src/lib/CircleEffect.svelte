@@ -3,11 +3,19 @@
   export let reverse = false;
   export let quadrants = ["top-right", "bottom-left"];
   export let color = "white"
+  export let duration = "20s"
 
   const direction = reverse ? "alternate-reverse" : "alternate";
 </script>
 
-<div class="circle-layer" style="--circle-size: {size}; --animation-direction: {direction}; --color: {color}">
+<div 
+  class="circle-layer" 
+  style="
+  --circle-size: {size};
+  --animation-duration: {duration}; 
+  --animation-direction: {direction}; 
+  --color: {color};"
+  >
   {#each quadrants as item}
     <div class="quarter-circle {item}"></div>
   {/each}
@@ -24,9 +32,6 @@
     position: absolute;
     top: 0;
     left: 0;
-
-    /* background-color: green; */
-
     --border-size: calc(var(--circle-size) / 40);
     width: var(--circle-size);
     aspect-ratio: 1;
@@ -41,7 +46,7 @@
     border-radius: 0 var(--circle-size) 0 0;
     border-right: var(--border-size) solid var(--color);
     border-top: var(--border-size) solid var(--color);
-    animation: circle-rotate 20s ease-in-out infinite var(--animation-direction);
+    animation: circle-rotate var(--animation-duration) ease-in-out infinite var(--animation-direction);
   }
 
   .quarter-circle.bottom-left {
@@ -51,7 +56,7 @@
     border-radius: 0 0 0 var(--circle-size);
     border-bottom: var(--border-size) solid var(--color);
     border-left: var(--border-size) solid var(--color);
-    animation: circle-rotate 20s ease-in-out infinite var(--animation-direction);
+    animation: circle-rotate var(--animation-duration) ease-in-out infinite var(--animation-direction);
   }
 
   .quarter-circle.top-left {
@@ -61,7 +66,7 @@
     border-radius: var(--circle-size) 0 0 0;
     border-left: var(--border-size) solid var(--color);
     border-top: var(--border-size) solid var(--color);
-    animation: circle-rotate 20s ease-in-out infinite var(--animation-direction);
+    animation: circle-rotate var(--animation-duration) ease-in-out infinite var(--animation-direction);
   }
 
   .quarter-circle.bottom-right {
@@ -71,7 +76,7 @@
     border-radius: 0 0 var(--circle-size) 0;
     border-bottom: var(--border-size) solid var(--color);
     border-right: var(--border-size) solid var(--color);
-    animation: circle-rotate 20s ease-in-out infinite var(--animation-direction);
+    animation: circle-rotate var(--animation-duration) ease-in-out infinite var(--animation-direction);
   }
 
   @keyframes circle-rotate {
