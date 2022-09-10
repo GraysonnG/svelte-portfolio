@@ -2,38 +2,33 @@
   import CircleEffect from "./CircleEffect.svelte";
   import icon from "../assets/icon-purple.png";
   import { create_in_transition } from "svelte/internal";
-  import { elasticOut } from "svelte/easing";
+  import { exitGameEasterEgg, goToGameEasterEgg, state } from "../stores/main";
+  import { flip } from "../transitions/flip";
+  import { get } from "svelte/store";
 
   let easteregg;
-
-  const flip = (node, { duration }) => {
-    return {
-      duration,
-      css: t => {
-        const eased = elasticOut(t)
-        return `
-          transform: var(--translate) rotateY(${eased * 360}deg);
-        `
-      }
-    }
-  }
-
   let element;
 
   const animate = () => {
-
     if (!easteregg) {
       easteregg = create_in_transition(element, flip, {duration: 5000})
       easteregg.start()
       setTimeout(() => {easteregg = false}, 5000)
+      if(get(state).easterEggActive) {
+        exitGameEasterEgg()
+      } else {
+        goToGameEasterEgg()
+      }
+      state.update(s => {
+        s.easterEggActive = !s.easterEggActive
+        return s
+      })
     }
   }
 
 </script>
 
 <div class="wrapper">
-  <!-- <div class="square halftone"></div> -->
-
   <img src={icon} alt="" bind:this={element} on:click={animate}>
 
   <CircleEffect
@@ -76,7 +71,7 @@
 
 <style>
   .wrapper {
-    perspective: 900px;
+    perspective: 1000px;
     position: fixed;
     inset: 0;
     z-index: -1;
@@ -89,30 +84,6 @@
     height: 7em;
     --translate: translate(50%, 50%);
     transform: var(--translate);
-  }
-
-  .square {
-    position: absolute;
-    right: 15%;
-    bottom: 15%;
-    height: 12em;
-    --translate: translate(50%, 50%);
-    aspect-ratio: 1;
-    transform: var(--translate);
-    transform-origin: center center;
-    animation: rotate 10s ease-in-out infinite alternate;
-  }
-
-  .halftone::before {
-    content: "";
-    background-color: transparent;
-    background-image: radial-gradient(rgba(255, 255, 255, 1) 14%, transparent 17%);
-    background-size: 30% 30%;
-    background-repeat: space;
-    position: absolute;
-    min-height: 100%;
-    min-width: 100%;
-    z-index: -1;
   }
 
   .wrapper :global(.circle-layer) {
@@ -136,10 +107,6 @@
   @media screen and (max-width: 600px) {
     .wrapper {
       font-size: 0.75em;
-    }
-
-    .square {
-      height: 8em;
     }
   }
 </style>

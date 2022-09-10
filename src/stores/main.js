@@ -1,15 +1,17 @@
 import { writable } from "svelte/store";
-import { ABOUT, CONTACT, HOME, PROJECTS } from "../constants";
+import { ABOUT, CONTACT, HOME, PROJECTS, GAME } from "../constants";
 import About from "../routes/About.svelte";
 import Contact from "../routes/Contact.svelte";
 import Home from "../routes/Home.svelte";
 import Projects from "../routes/Projects.svelte";
+import Game from "../easteregg/Game.svelte";
 
 export const state = writable({
   loading: true,
   screen: Home,
   screenName: HOME,
   headerHidden: true,
+  easterEggActive: false,
 })
 
 export const goToScreen = (screenId) => {
@@ -74,6 +76,23 @@ export const goToPreviousScreen = () => {
       oldState.screen = About
       return oldState
     }
+    return oldState
+  })
+}
+
+export const goToGameEasterEgg = () => {
+  state.update(oldState => {
+    oldState.screenName = GAME
+    oldState.screen = Game
+
+    return oldState
+  })
+}
+
+export const exitGameEasterEgg = () => {
+  state.update(oldState => {
+    oldState.screenName = HOME
+    oldState.screen = Home
     return oldState
   })
 }

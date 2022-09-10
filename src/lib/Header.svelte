@@ -77,7 +77,7 @@
   $: mobile = isMobile()
 </script>
 
-{#if show}
+{#if show && !$state.easterEggActive}
   <header
     use:clickOutside
     on:click_outside={closeMenu}
@@ -85,7 +85,8 @@
     on:introend={() => {
       moveUnderlineToSelected()
     }}
-    transition:fade={{duration: 1000, delay: 2000}}>
+    in:fade={{duration: 1000, delay: 2000}}
+    out:fade={{duration: 500, delay: 0}}>
     <div class="underline" bind:this={underline}></div>
     <ul on:mouseleave={moveUnderlineToSelected}>
       {#each data.pages as item (item.id)}
