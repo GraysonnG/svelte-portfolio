@@ -1,13 +1,40 @@
 <script>
   import CircleEffect from "./CircleEffect.svelte";
   import icon from "../assets/icon-purple.png";
+  import { create_in_transition } from "svelte/internal";
+  import { elasticOut } from "svelte/easing";
+
+  let easteregg;
+
+  const flip = (node, { duration }) => {
+    return {
+      duration,
+      css: t => {
+        const eased = elasticOut(t)
+        return `
+          transform: var(--translate) rotateY(${eased * 360}deg);
+        `
+      }
+    }
+  }
+
+  let element;
+
+  const animate = () => {
+
+    if (!easteregg) {
+      easteregg = create_in_transition(element, flip, {duration: 5000})
+      easteregg.start()
+      setTimeout(() => {easteregg = false}, 5000)
+    }
+  }
 
 </script>
 
 <div class="wrapper">
   <!-- <div class="square halftone"></div> -->
 
-  <img src={icon} alt="">
+  <img src={icon} alt="" bind:this={element} on:click={animate}>
 
   <CircleEffect
     color="rgba(255,255,255,0.5)"
@@ -49,6 +76,7 @@
 
 <style>
   .wrapper {
+    perspective: 900px;
     position: fixed;
     inset: 0;
     z-index: -1;
@@ -59,7 +87,8 @@
     right: 15%;
     bottom: 15%;
     height: 7em;
-    transform: translate(50%, 50%);
+    --translate: translate(50%, 50%);
+    transform: var(--translate);
   }
 
   .square {
@@ -90,6 +119,8 @@
     position: absolute;
     right: 15%;
     bottom: 15%;
+    opacity: .5;
+    pointer-events: none;
   }
 
   @keyframes rotate {
