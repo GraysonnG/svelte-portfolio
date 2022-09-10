@@ -59,9 +59,16 @@
 <style>
   main {
     position: relative;
-    width: min(calc(1920px - 1em), calc(100% - 10em));
+    width: min(calc(100vw - 16em), 1600px);
     min-height: 100%;
     z-index: 2;
+  }
+
+  @media screen and (max-width: 820px) {
+    main {
+      width: calc(100vw - 2em);
+      padding: 0 1em;
+    }
   }
 
   @media screen and (max-width: 600px) {

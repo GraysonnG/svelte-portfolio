@@ -1,6 +1,9 @@
 <script>
+import { onMount } from "svelte";
+
   import { fly } from "svelte/transition";
   import { data } from "../content/contact";
+import { isMobile } from "../utils/mobilehelper";
 
   let email;
   let discord;
@@ -15,11 +18,13 @@
       navigator.clipboard.writeText(data.text)
     }
   }
+
+  let divTransitionDuration = isMobile() ? 0 : 1000;
 </script>
 
 <section transition:fly={{duration:1000, x: -1000}}>
   <h2>{data.title}</h2>
-  <div transition:fly={{duration: 1000, delay: 750, x: -50}}>
+  <div transition:fly={{duration: divTransitionDuration, delay: 750, x: -50}}>
     <p bind:this={email} on:click={onClickItem({
       element: email,
       text: data.email.rawText
@@ -160,7 +165,7 @@
     p {
       position: relative;
       left: -100%;
-      animation: flyIn 1s ease-in 1 forwards;
+      animation: flyIn 0.5s ease-in 1 forwards;
     }
 
     p:nth-child(1) {

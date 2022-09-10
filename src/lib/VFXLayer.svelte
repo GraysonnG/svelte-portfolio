@@ -1,5 +1,22 @@
+<script>
+  import CircleEffect from "./CircleEffect.svelte";
+
+
+</script>
+
 <div class="wrapper">
   <div class="square halftone"></div>
+
+  <CircleEffect
+    color="rgba(255,255,255,0.3)"
+    size="7em" 
+    />
+  <CircleEffect 
+    size="5em"
+    color="rgba(255,255,255,0.5)"
+    quadrants={["top-left", "bottom-right"]}
+    reverse
+    />
 </div>
 
 <style>
@@ -13,18 +30,19 @@
     position: absolute;
     right: 15%;
     bottom: 15%;
-    height: 10vw;
+    height: 12em;
+    --translate: translate(50%, 50%);
     aspect-ratio: 1;
-    transform: rotate(35deg);
+    transform: var(--translate);
+    transform-origin: center center;
     animation: rotate 10s ease-in-out infinite alternate;
-    /* background-color: red; */
   }
 
   .halftone::before {
     content: "";
     background-color: transparent;
-    background-image: radial-gradient(rgba(255, 255, 255, 1) 7%, transparent 8.5%);
-    background-size: 3vw 3vw;
+    background-image: radial-gradient(rgba(255, 255, 255, 1) 14%, transparent 17%);
+    background-size: 30% 30%;
     background-repeat: space;
     position: absolute;
     min-height: 100%;
@@ -32,13 +50,19 @@
     z-index: -1;
   }
 
+  .wrapper :global(.circle-layer) {
+    position: absolute;
+    right: 15%;
+    bottom: 15%;
+  }
+
   @keyframes rotate {
     from {
-      transform: rotate(35deg) scale(1);
+      transform: var(--translate) rotate(35deg) scale(0.5);
     }
 
     to {
-      transform: rotate(195deg) scale(0.5);
+      transform: var(--translate) rotate(195deg) scale(0.25);
     }
   }
 

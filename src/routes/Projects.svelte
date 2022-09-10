@@ -1,21 +1,18 @@
 <script>
   import { fly } from "svelte/transition";
-  import SlideText from "../lib/SlideText.svelte";
   import { data } from "../content/projects";
 </script>
 
 <section transition:fly={{duration: 1000, x: -1000}}>
-  <h2>{data.title}</h2>
   <ul>
     {#each data.projects as project, index}
       <li transition:fly={{duration: 300, delay: 750 + (index * 200), x: -50}}>
-        <a href={project.link} target="_blank">
-          <img src={project.img} alt="" />
-          <div>
-            <SlideText text={project.title} size="1.5em" />
-            <p>{project.description}</p>
-          </div>
-        </a>
+        <img src={project.img} alt="" />
+        <div>
+          <h3>{project.title}</h3>
+          <p>{project.description}</p>
+          <a href={project.link} target="_blank">Go</a>
+        </div>
       </li>
     {/each}
   </ul>
@@ -41,28 +38,27 @@
 
   li {
     position: relative;
-    cursor: pointer;
-    height: 12vh;
+    height: 16vh;
     max-width: 60rem;
-    animation-name: pulse;
-    animation-duration: 5s;
-    animation-timing-function: ease-in-out;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
-    animation-delay: var(--animation-delay);
     aspect-ratio: 3/2;
     border: 1px solid transparent;
     transition: all 500ms;
     background-color: transparent;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
     border-radius: 0.5em;
+    color: white;
+    display: flex;
+    gap: 1em;
+    position: relative;
+    padding: 0.33em;
   }
 
   div {
     overflow: hidden;
-    font-size: 1rem;
+    font-size: max(1em, 1rem);
   }
 
-  li > a > div > :global(div) {
+  li > div > :global(div) {
     color: white;
   }
 
@@ -73,13 +69,18 @@
   }
 
   a {
+    position: absolute;
+    right: 0.5em;
+    bottom: 0.5em;
+    display: inline-block;
+    background-color: var(--color-highlight);
     color: white;
+    font-weight: 100;
     text-decoration: none;
-    display: flex;
-    gap: 1em;
-    position: relative;
-    height: 12vh;
-    padding: 0.33em;
+    text-transform: uppercase;
+    border-radius: 0.3rem;
+    padding: 0.25em 1.5em;
+    box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.5);
   }
 
   li::after, li::before {
@@ -120,24 +121,15 @@
 
   li:hover {
     transform: scale(1.025);
-    background-color: rgba(160, 150, 255, 0.2) !important;
+    background-color: rgba(160, 150, 255, 0.1) !important;
   }
 
-  li:hover > a > div > :global(div) {
+  li:hover > div > :global(div) {
     color: var(--color-highlight);
   }
 
   li:active {
     transform: scale(1.013);
-  }
-
-
-  li:hover::after {
-    animation: pointer-arrow 1s ease-in 0ms infinite forwards;
-  }
-
-  li:hover::before {
-    animation: pointer-line 1s ease-in 0ms infinite forwards;
   }
 
   img {
@@ -157,6 +149,20 @@
       max-width: 100%;
       padding: 0 2em;
       transform: translateY(-50%);
+    }
+
+    a {
+      bottom: 0.25;
+      right: 0.25;
+    }
+
+    li {
+      height: unset;
+      aspect-ratio: 6/1;
+    }
+
+    img {
+      aspect-ratio: 9/16;
     }
 
     div {
