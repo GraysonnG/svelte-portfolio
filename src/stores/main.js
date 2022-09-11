@@ -8,10 +8,10 @@ import Game from "../easteregg/Game.svelte";
 
 export const state = writable({
   loading: true,
-  screen: Home,
-  screenName: HOME,
+  screen: Game,
+  screenName: GAME,
   headerHidden: true,
-  easterEggActive: false,
+  easterEggActive: true,
 })
 
 export const goToScreen = (screenId) => {

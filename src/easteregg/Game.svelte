@@ -1,0 +1,190 @@
+<script>
+  import { fly } from "svelte/transition"
+  import { gamestate, time, player, handlePlayerCollision, map, spawnProjectile, projectiles, gunTimer, handleProjectileCollision } from "./gamestate";
+  import Player from "./objects/Player.svelte";
+  import Map from "./Map.svelte";
+  import { onDestroy, onMount } from "svelte";
+  import StatsUI from "./objects/StatsUI.svelte";
+
+  let keyDownListener;
+  let keyUpListener;
+  let clickListener;
+  let frame;
+  let currentMap;
+
+  onMount(() => {
+    keyDownListener = (e) => {
+      player.update(p => {
+        switch(e.key) {
+          case "a": 
+            p.velocity.x = -0.5
+            break;
+          case "d":
+            p.velocity.x = 0.5
+            break;
+          case "w":
+            p.velocity.y = -0.5
+            break;
+          case "s":
+            p.velocity.y = 0.5
+            break;
+        }
+
+        return p;
+      })
+    }
+
+    keyUpListener = (e) => {
+      player.update(p => {
+        switch(e.key) {
+          case "w":
+          case "s":
+            p.velocity.y = 0
+            break;
+          case "d":
+          case "a": 
+            p.velocity.x = 0
+            break;
+        }
+
+        return p;
+      })
+    }
+
+    clickListener = (e) => {
+      spawnProjectile({
+        mouseX: e.clientX,
+        mouseY: e.clientY,
+      })
+    }
+
+    window.addEventListener("keydown", keyDownListener)
+    window.addEventListener("keyup", keyUpListener)
+    window.addEventListener("click", clickListener)
+
+    map.subscribe(m => {
+      currentMap = m
+    })
+
+    return createLoop((elapsed, dt) => {
+      time.set(elapsed)
+      update(dt)
+    })
+  })
+
+  onDestroy(() => {
+    window.removeEventListener("keydown", keyDownListener)
+    window.removeEventListener("keyup", keyUpListener)
+    window.removeEventListener("click", clickListener)
+  })
+
+  function update(dt) {
+    gunTimer.update(t => {
+      return Math.max(t - dt, 0)
+    })
+
+    player.update(p => {
+      p.position.x += dt * p.velocity.x
+      p.position.y += dt * p.velocity.y
+
+      
+      
+      handlePlayerCollision(p, currentMap.tiles, currentMap.tileSize, dt)
+
+      // do collition logic
+      // update enemy position
+
+      // do hit logic for projeciles and enemies
+
+      return p
+    })
+
+    projectiles.update(ps => {
+      ps.forEach(p => {
+        p.lifespan -= dt;
+        p.position.x += dt * p.velocity.x
+        p.position.y += dt * p.velocity.y
+
+        handleProjectileCollision(p, currentMap)
+      })
+
+      for(let i = ps.length - 1; i >= 0; i--) {
+        if (ps[i].lifespan <= 0) {
+          ps.splice(i, 1)
+        }
+      }
+
+      return ps
+    })
+  }
+
+  function createLoop(fn) {
+    console.log("create game loop")
+    let elapsed = 0;
+    let lastTime = performance.now()
+    let loop = () => {
+      frame = requestAnimationFrame(loop);
+      const beginTime = performance.now();
+      const dt = (beginTime - lastTime) / 1000;
+      lastTime = beginTime;
+      elapsed += dt;
+      fn(elapsed, dt)
+    }
+    loop()
+    return () => {
+      cancelAnimationFrame(frame)
+    }
+  }
+
+</script>
+
+<section transition:fly={{ duration: 1000, y: 1000 }}>
+  <div class="game-area">
+    <Player />
+    <Map {...$map} />
+  </div>
+  <StatsUI {...$player} level={$gamestate.level} />
+</section>
+
+<style>
+  section {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: min(1600px, calc(100vw - 1rem));
+    aspect-ratio: 16/9;
+    transform: translate(-50%, -50%);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 1em;
+    backdrop-filter: blur(5px);
+  }
+
+  .game-area {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  section::before, section::after {
+    content: "";
+    position: absolute;
+    border-color: var(--color-highlight);
+    width: 5em;
+    height: 5em;
+  }
+
+  section::before {
+    top: -0.5em;
+    left: -0.5em;
+    border-left: 1px solid var(--color-highlight);
+    border-top: 1px solid var(--color-highlight);
+  }
+
+  section::after {
+    bottom: -0.5em;
+    right: -0.5em;
+    border-right: 1px solid var(--color-highlight);
+    border-bottom: 1px solid var(--color-highlight);
+  }
+</style>
