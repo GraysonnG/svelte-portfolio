@@ -8,7 +8,7 @@ export const expand = (node, { duration, inwards, fade }) => ({
 
     return `
       transform: translate(-50%, -50%) scale(${1 - (eased * exp)});
-      ${fade ? `opacity: ${1 - eased};` : ""}
+      ${fade ? `opacity: ${eased};` : ""}
     `
   }
 })

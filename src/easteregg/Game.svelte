@@ -5,6 +5,7 @@
   import Map from "./Map.svelte";
   import { onDestroy, onMount } from "svelte";
   import StatsUI from "./objects/StatsUI.svelte";
+  import { exitGameEasterEgg } from "../stores/main";
 
   let keyDownListener;
   let keyUpListener;
@@ -87,14 +88,7 @@
       p.position.x += dt * p.velocity.x
       p.position.y += dt * p.velocity.y
 
-      
-      
       handlePlayerCollision(p, currentMap.tiles, currentMap.tileSize, dt)
-
-      // do collition logic
-      // update enemy position
-
-      // do hit logic for projeciles and enemies
 
       return p
     })
@@ -144,6 +138,9 @@
     <Map {...$map} />
   </div>
   <StatsUI {...$player} level={$gamestate.level} />
+  <button class="close-button" on:click={exitGameEasterEgg}>
+    <i class="fa fa-close" />
+  </button>
 </section>
 
 <style>
@@ -186,5 +183,35 @@
     right: -0.5em;
     border-right: 1px solid var(--color-highlight);
     border-bottom: 1px solid var(--color-highlight);
+  }
+
+  .close-button {
+    color: white;
+    position: absolute;
+    display: flex;
+    top: 0;
+    right: 0;
+    background-color: var(--color-highlight);
+    border: none;
+    aspect-ratio: 1;
+    padding: 1rem;
+    margin: 0;
+    justify-content: center;
+    align-items: center;
+    line-height: 1;
+    transform: translate(50%, -50%);
+    outline: 1px solid rgba(255, 255, 255, 0.5);
+    outline-offset: 0.25rem;
+    transition: all 250ms;
+  }
+
+  .close-button:hover {
+    background-color: rgba(255, 100, 100, 1);
+    transform: translate(50%, -50%) scale(1.1);
+  }
+
+  .close-button:active {
+    background-color: rgba(255, 150, 150, 1);
+    transform: translate(50%, -50%) scale(0.9);
   }
 </style>

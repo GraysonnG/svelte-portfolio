@@ -19,10 +19,6 @@
       } else {
         goToGameEasterEgg()
       }
-      state.update(s => {
-        s.easterEggActive = !s.easterEggActive
-        return s
-      })
     }
   }
 
@@ -84,6 +80,7 @@
     height: 7em;
     --translate: translate(50%, 50%);
     transform: var(--translate);
+    cursor: pointer;
   }
 
   .wrapper :global(.circle-layer) {

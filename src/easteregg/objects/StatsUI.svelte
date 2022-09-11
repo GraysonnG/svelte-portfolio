@@ -1,10 +1,9 @@
 <script>
   export let hp;
-  export let speed;
   export let coins;
   export let level;
 
-  let hpary = new Array(hp)
+  $: hpary = new Array(hp)
 </script>
 
 <div class="stats">
@@ -35,7 +34,7 @@
   }
 
   .stats *:not(i) {
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Roboto Mono', 'Courier New', Courier, monospace;
     font-weight: 900;
   }
 

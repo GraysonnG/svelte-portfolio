@@ -41,7 +41,7 @@
     </div>
   {/each}
 
-  {#each $projectiles as projectile}
+  {#each $projectiles as projectile (projectile.id)}
     <Projectile projectile={projectile} />
   {/each}
 </div>
@@ -61,7 +61,19 @@
     height: var(--tile-size);
   }
 
+  .tile:nth-child(2n) {
+    background-color: rgba(160, 150, 255, 0.05);
+  }
+
+  .row:nth-child(2n) .tile:nth-child(2n) {
+    background-color: transparent;
+  }
+
+  .row:nth-child(2n) .tile:nth-child(2n + 1) {
+    background-color: rgba(160, 150, 255a, 0.05);
+  }
+
   .wall {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.2) !important;
   }
 </style>

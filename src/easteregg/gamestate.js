@@ -1,7 +1,10 @@
 import { get, writable } from "svelte/store";
 
+let particleId = 0
+
 export const gamestate = writable({
   level: 0,
+  paused: false,
 })
 
 export const player = writable({
@@ -27,8 +30,8 @@ export const map = writable({
   tiles: [
     [1,1,1,1,1,1,1],
     [1,0,0,0,0,0,1],
-    [1,0,0,0,1,0,1],
-    [1,0,0,0,0,0,1],
+    [1,0,0,1,1,0,1],
+    [1,0,0,1,0,0,1],
     [1,1,1,1,1,1,1],
   ],
   tileSize: 30 * 16
@@ -109,7 +112,8 @@ export const handleProjectileCollision = (projectile, mapp) => {
         projectile.position.x > x && projectile.position.x < x + 1 &&
         projectile.position.y > y && projectile.position.y < y + 1
       ) {
-        projectile.lifespan = 0
+        projectile.velocity.x = 0
+        projectile.velocity.y = 0
       }
     }
   }
@@ -118,7 +122,7 @@ export const handleProjectileCollision = (projectile, mapp) => {
 export const spawnProjectile = ({ mouseX, mouseY }) => {
   if (get(gunTimer) === 0) {
     const plyr = get(player)
-    gunTimer.set(0.5)
+    gunTimer.set(0.2)
 
     const vect = getVectorFromPlayerToMouse({
       mouseX,
@@ -127,14 +131,15 @@ export const spawnProjectile = ({ mouseX, mouseY }) => {
 
     projectiles.update(p => {
       p.push({
+        id: ++particleId,
         lifespan: 5,
         position: {
           x: plyr.position.x,
           y: plyr.position.y,
         },
         velocity: {
-          x: vect.x * 1,
-          y: vect.y * 1,
+          x: vect.x * 1 + plyr.velocity.x,
+          y: vect.y * 1 + plyr.velocity.y,
         }
       })
       return p
@@ -152,18 +157,11 @@ export const getVectorFromPlayerToMouse = ({ mouseX, mouseY }) => {
     dx: plrPos.x - mouseX,
     dy: plrPos.y - mouseY,
   }
-
-  let norm = {
-    x: 0,
-    y: 0,
-  }
   
   const length = Math.sqrt(delta.dx * delta.dx + delta.dy * delta.dy)
 
-  norm.x = -(delta.dx / length)
-  norm.y = -(delta.dy / length)
-
-  return norm
-
-
+  return {
+    x: -(delta.dx / length),
+    y: -(delta.dy / length),
+  }
 }
