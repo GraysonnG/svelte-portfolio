@@ -65,7 +65,6 @@
     color="white"
     quadrants={["bottom-left"]}
     duration="80s"
-    duration="40s"
     />
   <CircleEffect 
     size="6.7em"
