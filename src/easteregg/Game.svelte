@@ -1,6 +1,6 @@
 <script>
   import { fly } from "svelte/transition"
-  import { gamestate, time, player, handlePlayerCollision, map, spawnProjectile, projectiles, gunTimer, handleProjectileCollision } from "./gamestate";
+  import { gamestate, time, player, map, spawnProjectile, gunTimer, newGame, listeners, props, projectiles, enemies } from "./gamestate";
   import Player from "./objects/Player.svelte";
   import Map from "./Map.svelte";
   import { onDestroy, onMount } from "svelte";
@@ -11,7 +11,6 @@
   let keyUpListener;
   let clickListener;
   let frame;
-  let currentMap;
 
   onMount(() => {
     keyDownListener = (e) => {
@@ -61,11 +60,8 @@
 
     window.addEventListener("keydown", keyDownListener)
     window.addEventListener("keyup", keyUpListener)
-    window.addEventListener("click", clickListener)
 
-    map.subscribe(m => {
-      currentMap = m
-    })
+    setTimeout(newGame, 500)
 
     return createLoop((elapsed, dt) => {
       time.set(elapsed)
@@ -76,39 +72,50 @@
   onDestroy(() => {
     window.removeEventListener("keydown", keyDownListener)
     window.removeEventListener("keyup", keyUpListener)
-    window.removeEventListener("click", clickListener)
   })
 
   function update(dt) {
+    listeners.forEach(entity => {
+      try {
+        entity.update($props, dt)
+      } catch (e) {
+        console.error(e)
+        cancelAnimationFrame(frame)
+      }
+    })
+
+    for(let i = listeners.length - 1; i >= 0; i--) {
+      if (!listeners[i].mounted) {
+        listeners.splice(i, 1)
+      }
+    }
+
     gunTimer.update(t => {
       return Math.max(t - dt, 0)
     })
 
-    player.update(p => {
-      p.position.x += dt * p.velocity.x
-      p.position.y += dt * p.velocity.y
-
-      handlePlayerCollision(p, currentMap.tiles, currentMap.tileSize, dt)
-
-      return p
-    })
 
     projectiles.update(ps => {
-      ps.forEach(p => {
-        p.lifespan -= dt;
-        p.position.x += dt * p.velocity.x
-        p.position.y += dt * p.velocity.y
-
-        handleProjectileCollision(p, currentMap)
-      })
-
       for(let i = ps.length - 1; i >= 0; i--) {
+        ps[i].lifespan -= dt;
         if (ps[i].lifespan <= 0) {
           ps.splice(i, 1)
         }
       }
 
       return ps
+    })
+
+    enemies.update(obj => {
+      const enm = obj.list
+
+      for(let i = enm.length - 1; i >= 0; i--) {
+        if (enm[i].hp <= 0) {
+          enm.splice(i, 1)
+        }
+      }
+
+      return obj
     })
   }
 
@@ -132,7 +139,7 @@
 
 </script>
 
-<section transition:fly={{ duration: 1000, y: 1000 }}>
+<section transition:fly={{ duration: 1000, y: 1000 }} on:click={clickListener}>
   <div class="game-area">
     <Player />
     <Map {...$map} />
@@ -148,7 +155,7 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    width: min(1600px, calc(100vw - 1rem));
+    width: min(1600px, calc(100vw - 10rem));
     aspect-ratio: 16/9;
     transform: translate(-50%, -50%);
     border: 1px solid rgba(255, 255, 255, 0.5);

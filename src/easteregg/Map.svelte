@@ -1,27 +1,17 @@
 <script>
-  import { onDestroy, onMount } from "svelte";
-  import { player, projectiles } from "./gamestate";
+  import { addEntity, enemies, projectiles } from "./gamestate";
+  import Enemy from "./objects/Enemy.svelte";
   import Projectile from "./objects/Projectile.svelte";
   
   export let tiles = []
   export let tileSize = 0
   
-  let unsub;
   let left;
   let top;
 
-  onMount(() => {
-    unsub = player.subscribe(p => {
-      const x = -1 * (p.position.x) * tileSize
-      const y = -1 * (p.position.y) * tileSize
-
-      left = x
-      top = y
-    })
-  })
-
-  onDestroy(() => {
-    unsub()
+  addEntity((props) => {
+    left = -1 * props.player.position.x * props.map.tileSize
+    top = -1 * props.player.position.y * props.map.tileSize
   })
 
 </script>
@@ -39,6 +29,12 @@
         <div class="tile {x == 1 ? "wall" : ""}"></div>
       {/each}
     </div>
+  {/each}
+
+  {#each $enemies.list as enemy (enemy.id)}
+    <Enemy
+      enemy={enemy}
+    />
   {/each}
 
   {#each $projectiles as projectile (projectile.id)}

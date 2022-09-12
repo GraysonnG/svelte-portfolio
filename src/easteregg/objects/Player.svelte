@@ -1,5 +1,22 @@
 <script>
-  import { gamestate, player } from "../gamestate"
+  import { addEntity, handlePlayerCollision, player } from "../gamestate"
+
+
+  addEntity((props, dt) => {
+    player.update(p => {
+      p.position.x += dt * p.velocity.x
+      p.position.y += dt * p.velocity.y
+
+      handlePlayerCollision(
+        p,
+        props.map.tiles,
+        props.map.tileSize,
+        dt
+      )
+
+      return p
+    })
+  })
 </script>
 
 <div class="player" style="--player-size: {$player.size}px;">

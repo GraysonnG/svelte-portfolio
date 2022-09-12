@@ -1,13 +1,25 @@
 <script>
   import { get } from "svelte/store";
   import { fade } from "svelte/transition";
-  import { map } from "../gamestate";
+  import { addEntity, map, props } from "../gamestate";
+  import { handleProjectileCollision } from "../helpers/projectilehelper";
 
   export let projectile
-  const tileSize = get(map).tileSize
+  let left = 0
+  let top = 0
 
-  $: left = projectile.position.x * tileSize;
-  $: top = projectile.position.y * tileSize;
+  addEntity((props, dt) => {
+    projectile.lifespan -= dt
+    projectile.position.x += dt * projectile.velocity.x
+    projectile.position.y += dt * projectile.velocity.y
+
+    left = projectile.position.x * props.map.tileSize
+    top = projectile.position.y * props.map.tileSize
+
+    handleProjectileCollision(projectile, props.enemies, props.map)
+  })
+
+
 </script>
 
 <div

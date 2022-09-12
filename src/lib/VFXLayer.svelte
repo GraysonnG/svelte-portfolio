@@ -5,6 +5,7 @@
   import { exitGameEasterEgg, goToGameEasterEgg, state } from "../stores/main";
   import { flip } from "../transitions/flip";
   import { get } from "svelte/store";
+  import { isMobile } from "../utils/mobilehelper";
 
   let easteregg;
   let element;
@@ -14,10 +15,12 @@
       easteregg = create_in_transition(element, flip, {duration: 5000})
       easteregg.start()
       setTimeout(() => {easteregg = false}, 5000)
-      if(get(state).easterEggActive) {
-        exitGameEasterEgg()
-      } else {
-        goToGameEasterEgg()
+      if (!isMobile()) {
+        if(get(state).easterEggActive) {
+          exitGameEasterEgg()
+        } else {
+          goToGameEasterEgg()
+        }
       }
     }
   }

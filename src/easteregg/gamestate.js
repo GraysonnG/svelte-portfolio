@@ -1,17 +1,16 @@
-import { get, writable } from "svelte/store";
+import { derived, get, writable } from "svelte/store";
+import { onMount } from "svelte";
+import { generateEnemies } from "./helpers/enemyhelper";
+
 
 let particleId = 0
-
-export const gamestate = writable({
-  level: 0,
-  paused: false,
-})
+let enemyId = 0
 
 export const player = writable({
   size: 32,
   position: {
-    x: 2.5,
-    y: 2.5,
+    x: 1.5,
+    y: 1.5,
   },
   velocity: {
     x: 0,
@@ -23,16 +22,16 @@ export const player = writable({
   items: []
 })
 
-export const enemies = writable([])
+export const enemies = writable({
+  list: [],
+})
 export const projectiles = writable([])
 
 export const map = writable({
   tiles: [
-    [1,1,1,1,1,1,1],
-    [1,0,0,0,0,0,1],
-    [1,0,0,1,1,0,1],
-    [1,0,0,1,0,0,1],
-    [1,1,1,1,1,1,1],
+    [1,1,1],
+    [1,2,1],
+    [1,1,1],
   ],
   tileSize: 30 * 16
 })
@@ -40,10 +39,86 @@ export const map = writable({
 export const time = writable(0)
 export const gunTimer = writable(0)
 
+export const gamestate = writable({
+  level: 0,
+  paused: false,
+})
+
+export const props = deriveObject({
+  enemies,
+  gamestate,
+  gunTimer,
+  map,
+  player,
+  projectiles,
+  time,
+})
+
+function deriveObject (obj) {
+	const keys = Object.keys(obj);
+	const list = keys.map(key => {
+		return obj[key];
+	});
+  const out = derived(list, (array) => {
+		return array.reduce((dict, value, i) => {
+			dict[keys[i]] = value;
+			return dict;
+		}, {});
+	});
+
+	return out
+}
+
+export let listeners = []
+
+export const addEntity = (updatefn) => {
+  const element = {
+    mounted: false,
+    update: updatefn
+  }
+
+  listeners.push(element)
+
+  onMount(() => {
+    element.mounted = true
+    return () => {
+      element.mounted = false
+    }
+  })
+}
+
 export const newGame = () => {
-  setInterval(() => {
-    // spawn enemies
-  }, 5000);
+  // set the player
+  // set the enemies
+  // set the map to a 1x1
+
+  startLevel()
+}
+
+export const startLevel = () => {
+  const level = get(gamestate).level
+
+  const generatedMap = [
+    [1,1,1,1,1,1,1],
+    [1,0,0,2,0,0,1],
+    [1,0,0,1,1,0,1],
+    [1,0,0,1,0,0,1],
+    [1,1,1,1,1,1,1],
+  ]
+
+  // generate map
+  map.set({
+    tiles: generatedMap,
+    tileSize: 30 * 16
+  })
+
+  placePlayer(generatedMap)
+
+  const spawnedEnemies = generateEnemies(level, generatedMap)
+
+  enemies.set({
+    list: spawnedEnemies
+  })
 }
 
 export const handlePlayerCollision = (player, map, tileSize, dt) => {
@@ -104,21 +179,6 @@ export const handlePlayerCollision = (player, map, tileSize, dt) => {
   }
 }
 
-export const handleProjectileCollision = (projectile, mapp) => {
-  for (let y = 0; y < mapp.tiles.length; y++) {
-    for (let x = 0; x < mapp.tiles[y].length; x++) {
-      if (
-        mapp.tiles[y][x] === 1 &&
-        projectile.position.x > x && projectile.position.x < x + 1 &&
-        projectile.position.y > y && projectile.position.y < y + 1
-      ) {
-        projectile.velocity.x = 0
-        projectile.velocity.y = 0
-      }
-    }
-  }
-}
-
 export const spawnProjectile = ({ mouseX, mouseY }) => {
   if (get(gunTimer) === 0) {
     const plyr = get(player)
@@ -138,8 +198,8 @@ export const spawnProjectile = ({ mouseX, mouseY }) => {
           y: plyr.position.y,
         },
         velocity: {
-          x: vect.x * 1 + plyr.velocity.x,
-          y: vect.y * 1 + plyr.velocity.y,
+          x: vect.x * 1,
+          y: vect.y * 1,
         }
       })
       return p
@@ -164,4 +224,19 @@ export const getVectorFromPlayerToMouse = ({ mouseX, mouseY }) => {
     x: -(delta.dx / length),
     y: -(delta.dy / length),
   }
+}
+
+const placePlayer = (map) => {
+  map.forEach((row, my) => {
+    row.forEach((tile, mx) => {
+      if (tile == 2) {
+        player.update(p => {
+          p.position.x = mx + 0.5
+          p.position.y = my + 0.5
+
+          return p
+        })
+      } 
+    })
+  })
 }

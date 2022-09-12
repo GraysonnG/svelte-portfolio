@@ -1,9 +1,13 @@
 <script>
+import Fps from "../FPS.svelte";
+
   export let hp;
   export let coins;
   export let level;
 
   $: hpary = new Array(hp)
+
+
 </script>
 
 <div class="stats">
@@ -18,6 +22,8 @@
   <span>Coins: {coins}</span>
   <span class="spacer"></span>
   <span>Level: {level}</span>
+
+  <Fps />
 </div>
 
 <style>

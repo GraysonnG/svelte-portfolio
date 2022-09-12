@@ -24,9 +24,11 @@
       })
 
       document.addEventListener("click", () => {
-        const clickDur = 100
-        cursorClick = create_in_transition(cursor, expand, { duration: clickDur, inwards: true })
-        cursorClick.start()
+        try {
+          const clickDur = 100
+          cursorClick = create_in_transition(cursor, expand, { duration: clickDur, inwards: true })
+          cursorClick.start()
+        } catch (e) { /* swallow error */ }
       })
       cursorAttached = true
     }
