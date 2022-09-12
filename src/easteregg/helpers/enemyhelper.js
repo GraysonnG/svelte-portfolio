@@ -3,6 +3,7 @@ let enemyId = 0
 export const generateEnemies = (level, map) => {
   const out = []
   const validSpawns = []
+  const numOfEnemies = 10 + (level * 2)
 
   map.forEach((row, y) => {
     row.forEach((tile, x) => {
@@ -12,7 +13,7 @@ export const generateEnemies = (level, map) => {
     })
   })
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < numOfEnemies; i++) {
     const validSpawnNum = Math.round(
       Math.random() * (validSpawns.length - 1)
     )
@@ -62,6 +63,20 @@ export const getEnemyHP = (size) => {
   return hp
 }
 
+export const getEnemySpeed = (size) => {
+  let speed = 0.7
+
+  if (size === "medium") {
+    speed = 0.6
+  }
+
+  if (size === "large") {
+    speed = 0.5
+  }
+
+  return speed
+}
+
 export const handleEnemyCollision = (
   enemy, 
   player, 
@@ -94,4 +109,11 @@ export const pointWithinEnemy = (point, enemy, tileSize) => {
   const deltaY = Math.abs(point.y - enemy.position.y)
 
   return deltaX < dist && deltaY < dist
+}
+
+export const playerNearby = (playerPos, enemy, tileSize) => {
+  const deltaX = Math.abs(playerPos.x - enemy.position.x)
+  const deltaY = Math.abs(playerPos.y - enemy.position.y)
+
+  return deltaX < tileSize * 1.5 && deltaY < tileSize * 1.5
 }

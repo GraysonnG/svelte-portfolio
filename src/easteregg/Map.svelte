@@ -1,6 +1,7 @@
 <script>
   import { addEntity, enemies, projectiles } from "./gamestate";
   import Enemy from "./objects/Enemy.svelte";
+  import Ladder from "./objects/Ladder.svelte";
   import Projectile from "./objects/Projectile.svelte";
   
   export let tiles = []
@@ -40,6 +41,8 @@
   {#each $projectiles as projectile (projectile.id)}
     <Projectile projectile={projectile} />
   {/each}
+
+  <Ladder />
 </div>
 
 <style>
@@ -66,7 +69,7 @@
   }
 
   .row:nth-child(2n) .tile:nth-child(2n + 1) {
-    background-color: rgba(160, 150, 255a, 0.05);
+    background-color: rgba(160, 150, 255, 0.05);
   }
 
   .wall {

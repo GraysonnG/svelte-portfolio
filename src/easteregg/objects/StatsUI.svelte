@@ -1,12 +1,19 @@
 <script>
-import Fps from "../FPS.svelte";
+  import Fps from "../FPS.svelte";
+  import { addEntity } from "../gamestate";
 
   export let hp;
   export let coins;
   export let level;
 
   $: hpary = new Array(hp)
+  $: maxEnemies = 0
+  $: enemies = 0
 
+  addEntity(props => {
+    maxEnemies = 10 + (props.gamestate.level * 2)
+    enemies = props.enemies.list.length
+  })
 
 </script>
 
@@ -20,8 +27,9 @@ import Fps from "../FPS.svelte";
     </div>
   </span>
   <span>Coins: {coins}</span>
+  <span>Enemies: {enemies}/{maxEnemies}</span>
   <span class="spacer"></span>
-  <span>Level: {level}</span>
+  <span>Level: {level + 1}</span>
 
   <Fps />
 </div>
@@ -37,6 +45,7 @@ import Fps from "../FPS.svelte";
     padding: 0.25rem 1rem;
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(5px);
+    pointer-events: none;
   }
 
   .stats *:not(i) {

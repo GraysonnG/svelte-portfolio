@@ -1,5 +1,6 @@
 <script>
   import { addEntity, handlePlayerCollision, player } from "../gamestate"
+import Arrow from "./Arrow.svelte"
 
 
   addEntity((props, dt) => {
@@ -20,8 +21,9 @@
 </script>
 
 <div class="player" style="--player-size: {$player.size}px;">
-
+  <Arrow />
 </div>
+
 
 <style>
   .player {

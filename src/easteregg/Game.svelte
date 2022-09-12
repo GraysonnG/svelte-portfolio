@@ -6,6 +6,7 @@
   import { onDestroy, onMount } from "svelte";
   import StatsUI from "./objects/StatsUI.svelte";
   import { exitGameEasterEgg } from "../stores/main";
+  import Minimap from "./objects/Minimap.svelte";
 
   let keyDownListener;
   let keyUpListener;
@@ -17,16 +18,16 @@
       player.update(p => {
         switch(e.key) {
           case "a": 
-            p.velocity.x = -0.5
+            p.velocity.x = -0.7
             break;
           case "d":
-            p.velocity.x = 0.5
+            p.velocity.x = 0.7
             break;
           case "w":
-            p.velocity.y = -0.5
+            p.velocity.y = -0.7
             break;
           case "s":
-            p.velocity.y = 0.5
+            p.velocity.y = 0.7
             break;
         }
 
@@ -139,12 +140,13 @@
 
 </script>
 
-<section transition:fly={{ duration: 1000, y: 1000 }} on:click={clickListener}>
-  <div class="game-area">
+<section transition:fly={{ duration: 1000, y: 1000 }} >
+  <div class="game-area" on:click={clickListener}>
     <Player />
     <Map {...$map} />
   </div>
-  <StatsUI {...$player} level={$gamestate.level} />
+  <StatsUI {...$player} level={$props.gamestate.level} />
+  <Minimap />
   <button class="close-button" on:click={exitGameEasterEgg}>
     <i class="fa fa-close" />
   </button>

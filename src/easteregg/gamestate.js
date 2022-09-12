@@ -1,11 +1,9 @@
 import { derived, get, writable } from "svelte/store";
 import { onMount } from "svelte";
 import { generateEnemies } from "./helpers/enemyhelper";
-
+import { generateMap } from "./helpers/dungeonhelper";
 
 let particleId = 0
-let enemyId = 0
-
 export const player = writable({
   size: 32,
   position: {
@@ -26,6 +24,10 @@ export const enemies = writable({
   list: [],
 })
 export const projectiles = writable([])
+export const ladder = writable({
+  x: 0,
+  y: 0,
+})
 
 export const map = writable({
   tiles: [
@@ -48,6 +50,7 @@ export const props = deriveObject({
   enemies,
   gamestate,
   gunTimer,
+  ladder,
   map,
   player,
   projectiles,
@@ -97,16 +100,8 @@ export const newGame = () => {
 
 export const startLevel = () => {
   const level = get(gamestate).level
+  const generatedMap = generateMap(level)
 
-  const generatedMap = [
-    [1,1,1,1,1,1,1],
-    [1,0,0,2,0,0,1],
-    [1,0,0,1,1,0,1],
-    [1,0,0,1,0,0,1],
-    [1,1,1,1,1,1,1],
-  ]
-
-  // generate map
   map.set({
     tiles: generatedMap,
     tileSize: 30 * 16
@@ -119,6 +114,10 @@ export const startLevel = () => {
   enemies.set({
     list: spawnedEnemies
   })
+
+  ladder.set(
+    spawnLadder(generatedMap)
+  )
 }
 
 export const handlePlayerCollision = (player, map, tileSize, dt) => {
@@ -239,4 +238,25 @@ const placePlayer = (map) => {
       } 
     })
   })
+}
+
+const spawnLadder = (map) => {
+  const validSpawns = []
+
+  map.forEach((row, y) => {
+    row.forEach((tile, x) => {
+      if (tile === 0) {
+        validSpawns.push([x, y])
+      }
+    })
+  })
+
+  const spawn = validSpawns[
+    Math.round(Math.random() * (validSpawns.length - 1))
+  ]
+
+  return {
+    x: spawn[0] + 0.5,
+    y: spawn[1] + 0.5,
+  }
 }
