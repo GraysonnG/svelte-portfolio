@@ -139,7 +139,6 @@
   }
 
   function createLoop(fn) {
-    console.log("create game loop")
     let elapsed = 0;
     let lastTime = performance.now()
     let loop = () => {

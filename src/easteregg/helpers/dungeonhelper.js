@@ -34,14 +34,13 @@ export const generateMap = (level) => {
     
     
     for(let x = 0; x < map[y].length; x++) {
-      line += `${map[y][x] === 1 ? "#" : "_"}`
+      line += `${map[y][x] === 1 ? "# " : "  "}`
     }
 
     line += "\n"
   }
 
   console.log(line)
-
 
   return map
 }

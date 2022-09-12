@@ -1,7 +1,6 @@
 <script>
-import { addEntity } from "../gamestate";
-
-
+  import { addEntity } from "../gamestate";
+  
   export let coin;
   let left = 0
   let top = 0
@@ -14,7 +13,7 @@ import { addEntity } from "../gamestate";
 
 <div class="coin" style="
   left: {left}px;
-  top: {top}px;s
+  top: {top}px;
 "><span></span></div>
 
 <style>

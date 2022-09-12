@@ -27,10 +27,15 @@ export const generateEnemies = (level, map) => {
       size,
       hp: getEnemyHP(size),
       maxHp: getEnemyHP(size),
+      dTimer: 0,
       position: {
         x: validSpawns[validSpawnNum][0] + 0.25 + (0.5 * Math.random()),
         y: validSpawns[validSpawnNum][1] + 0.25 + (0.5 * Math.random()),
       },
+      velocity: {
+        x: 0,
+        y: 0,
+      }
     })
   }
   return out
@@ -71,6 +76,15 @@ export const getEnemyCoins = (size) => {
   if (size === "large") coins = 5
 
   return coins;
+}
+
+export const getEnemyPx = (size) => {
+  let px = 20
+
+  if (size === "medium") px = 32
+  if (size === "large") px = 40
+
+  return px
 }
 
 export const handleEnemyCollision = (
@@ -114,4 +128,72 @@ export const playerNearby = (playerPos, enemy, tileSize) => {
   const deltaY = Math.abs(playerPos.y - enemy.position.y)
 
   return deltaX < tileSize * 1.5 && deltaY < tileSize * 1.5
+}
+
+export const setRandomDirection = (enemy) => {
+  const speed = getEnemySpeed(enemy.size)
+  enemy.velocity.x = (Math.random() * speed) - speed / 2
+  enemy.velocity.y = (Math.random() * speed) - speed / 2
+  enemy.dTimer = Math.random() * 5
+}
+
+export const setOppositeDirection = (enemy) => {
+  enemy.velocity.x = -enemy.velocity.x
+  enemy.velocity.y = -enemy.velocity.y
+  enemy.dTimer = (Math.random() * 5) + 0.1
+}
+
+export const doEnemyMovement = (enemy, player, map, dt) => {
+  enemy.dTimer -= dt
+  enemy.position.x += enemy.velocity.x * dt
+  enemy.position.y += enemy.velocity.y * dt
+
+  handleCollidingWithWall(enemy, map, dt)
+
+  if (enemy.dTimer <= 0) {
+    setRandomDirection(enemy)
+  }
+
+  
+
+
+  // if not playerNearby()
+  //   do random movement
+  // else
+  //   move towards the player
+}
+
+export const handleCollidingWithWall = (enemy, map, dt) => {
+  const px = getEnemyPx(enemy.size)
+  const outline = px / map.tileSize
+  const hb = {
+    x: enemy.position.x, y: enemy.position.y,
+    w: px / map.tileSize, h: px / map.tileSize,
+    l: enemy.position.x - outline, r: enemy.position.x + outline,
+    t: enemy.position.y - outline, b: enemy.position.y + outline,
+  }
+
+  map.tiles.forEach((row, y) => {
+    row.forEach((tile, x) => {
+      const thb = {
+        x: x, y: y,
+        w: 1, h: 1,
+        l: x, r: x + 1,
+        t: y, b: y + 1,
+      }
+      const withinX = hb.r > thb.l && hb.l <= thb.r
+      const withinY = hb.b > thb.t && hb.t <= thb.b
+
+      if (
+        tile === 1 &&
+        withinX &&
+        withinY
+      ) {
+        setOppositeDirection(enemy)
+        enemy.position.x += enemy.velocity.x * dt
+        enemy.position.y += enemy.velocity.y * dt
+      }
+    })
+  })
+
 }

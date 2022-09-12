@@ -1,6 +1,6 @@
 <script>
   import { addEntity } from "../gamestate";
-  import { handleEnemyCollision } from "../helpers/enemyhelper";
+  import { doEnemyMovement, handleEnemyCollision } from "../helpers/enemyhelper";
   export let enemy;
 
   const getIcon = (s) => {
@@ -60,6 +60,13 @@
       props.player,
       props.projectiles,
       props.map
+    )
+
+    doEnemyMovement(
+      enemy,
+      props.player,
+      props.map,
+      dt
     )
   })
 </script>
