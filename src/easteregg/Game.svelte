@@ -1,6 +1,18 @@
 <script>
   import { fly } from "svelte/transition"
-  import { gamestate, time, player, map, spawnProjectile, gunTimer, newGame, listeners, props, projectiles, enemies } from "./gamestate";
+  import { 
+    time, 
+    player, 
+    map, 
+    spawnProjectile, 
+    gunTimer, 
+    newGame, 
+    listeners, 
+    props, 
+    projectiles, 
+    enemies, 
+    coins,
+  } from "./gamestate";
   import Player from "./objects/Player.svelte";
   import Map from "./Map.svelte";
   import { onDestroy, onMount } from "svelte";
@@ -62,7 +74,7 @@
     window.addEventListener("keydown", keyDownListener)
     window.addEventListener("keyup", keyUpListener)
 
-    setTimeout(newGame, 500)
+    newGame()
 
     return createLoop((elapsed, dt) => {
       time.set(elapsed)
@@ -103,20 +115,26 @@
           ps.splice(i, 1)
         }
       }
-
       return ps
     })
 
     enemies.update(obj => {
       const enm = obj.list
-
       for(let i = enm.length - 1; i >= 0; i--) {
         if (enm[i].hp <= 0) {
           enm.splice(i, 1)
         }
       }
-
       return obj
+    })
+
+    coins.update(cns => {
+      for (let i = cns.length - 1; i >= 0; i--) {
+        if (cns[i].dead) {
+          cns.splice(i, 1)
+        }
+      }
+      return cns
     })
   }
 

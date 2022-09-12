@@ -24,6 +24,7 @@ export const enemies = writable({
   list: [],
 })
 export const projectiles = writable([])
+export const coins = writable([])
 export const ladder = writable({
   x: 0,
   y: 0,
@@ -47,6 +48,7 @@ export const gamestate = writable({
 })
 
 export const props = deriveObject({
+  coins,
   enemies,
   gamestate,
   gunTimer,
@@ -120,13 +122,29 @@ export const startLevel = () => {
   )
 }
 
-export const handlePlayerCollision = (player, map, tileSize, dt) => {
+export const spawnCoins = (enemy, amt = 1, area = 0.2) => {  
+  coins.update(c => {
+    for (let i = 0; i < amt; i++) {
+      c.push({
+        sx: enemy.position.x,
+        sy: enemy.position.y,
+        x: enemy.position.x + (area / 2) - (Math.random() * area),
+        y: enemy.position.y + (area / 2) - (Math.random() * area),
+        dead: false,
+      })
+    }
+
+    return c
+  })
+}
+
+export const handlePlayerCollision = (player, coins, map) => {
   const playerPos = player.position
-  const outline = player.size / tileSize / 2
+  const outline = player.size / map.tileSize / 2
 
   const hb = {
     x: playerPos.x, y: playerPos.y,
-    w: player.size / tileSize, h: player.size / tileSize,
+    w: player.size / map.tileSize, h: player.size / map.tileSize,
     l: playerPos.x - outline, r: playerPos.x + outline,
     t: playerPos.y - outline, b: playerPos.y + outline
   }
@@ -135,8 +153,8 @@ export const handlePlayerCollision = (player, map, tileSize, dt) => {
   let y = 0
 
 
-  for (let y = 0; y < map.length; y++) {
-    for (let x = 0; x < map[y].length; x++) {
+  for (let y = 0; y < map.tiles.length; y++) {
+    for (let x = 0; x < map.tiles[y].length; x++) {
       const thb = {
         x: x, y: y,
         w: 1, h: 1,
@@ -147,7 +165,7 @@ export const handlePlayerCollision = (player, map, tileSize, dt) => {
       const withinY = hb.b > y && hb.t <= y + 1
 
       if (
-        map[y][x] === 1 && 
+        map.tiles[y][x] === 1 && 
         withinX &&
         withinY
       ) {
@@ -171,11 +189,21 @@ export const handlePlayerCollision = (player, map, tileSize, dt) => {
           player.velocity.y = 0
           player.position.y = thb.b + outline + 0.005;
         }
-
-        // if ()
       }
     }
   }
+
+  coins.forEach(coin => {
+    const deltaX = Math.abs(coin.x - playerPos.x)
+    const deltaY = Math.abs(coin.y - playerPos.y)
+    const size = 20
+    const dist = size / map.tileSize
+
+    if (deltaX < dist && deltaY < dist) {
+      player.coins ++
+      coin.dead = true
+    }
+  })
 }
 
 export const spawnProjectile = ({ mouseX, mouseY }) => {

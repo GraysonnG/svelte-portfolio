@@ -1,7 +1,6 @@
 <script>
-  import { get } from "svelte/store";
   import { fade } from "svelte/transition";
-  import { addEntity, map, props } from "../gamestate";
+  import { addEntity } from "../gamestate";
   import { handleProjectileCollision } from "../helpers/projectilehelper";
 
   export let projectile

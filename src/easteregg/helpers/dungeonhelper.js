@@ -19,8 +19,6 @@ export const generateMap = (level) => {
     } catch (e) {}
   }
 
-  // connect rooms
-
   rooms.forEach((curr, i) => {
     if (i > 0) {
       connectRooms(rooms[i - 1], curr, map)

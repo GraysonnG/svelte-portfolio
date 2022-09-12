@@ -1,8 +1,8 @@
 <script>
-import { addEntity, props } from "../gamestate";
-import { handleEnemyCollision } from "../helpers/enemyhelper";
+  import { addEntity } from "../gamestate";
+  import { handleEnemyCollision } from "../helpers/enemyhelper";
   export let enemy;
-  
+
   const getIcon = (s) => {
     switch (s) {
       case "small":

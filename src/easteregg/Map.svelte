@@ -1,8 +1,9 @@
 <script>
-  import { addEntity, enemies, projectiles } from "./gamestate";
+  import { addEntity, coins, enemies, projectiles } from "./gamestate";
   import Enemy from "./objects/Enemy.svelte";
   import Ladder from "./objects/Ladder.svelte";
   import Projectile from "./objects/Projectile.svelte";
+  import Coin from "./objects/Coin.svelte";
   
   export let tiles = []
   export let tileSize = 0
@@ -40,6 +41,10 @@
 
   {#each $projectiles as projectile (projectile.id)}
     <Projectile projectile={projectile} />
+  {/each}
+
+  {#each $coins as coin}
+    <Coin coin={coin} />
   {/each}
 
   <Ladder />

@@ -1,3 +1,5 @@
+import { spawnCoins } from "../gamestate"
+
 let enemyId = 0
 
 export const generateEnemies = (level, map) => {
@@ -38,13 +40,8 @@ export const getEnemySize = (level) => {
   let out = "small"
   const rand = Math.random()
 
-  if (rand > .66) {
-    out = "medium"
-  }
-
-  if (rand > .90) {
-    out = "large"
-  }
+  if (rand > .66) out = "medium"
+  if (rand > .90) out = "large"
 
   return out;
 }
@@ -52,13 +49,8 @@ export const getEnemySize = (level) => {
 export const getEnemyHP = (size) => {
   let hp = 2
 
-  if (size === "medium") {
-    hp = 3
-  }
-
-  if (size === "large") {
-    hp = 5
-  }
+  if (size === "medium") hp = 3
+  if (size === "large") hp = 5
 
   return hp
 }
@@ -66,15 +58,19 @@ export const getEnemyHP = (size) => {
 export const getEnemySpeed = (size) => {
   let speed = 0.7
 
-  if (size === "medium") {
-    speed = 0.6
-  }
-
-  if (size === "large") {
-    speed = 0.5
-  }
+  if (size === "medium") speed = 0.6
+  if (size === "large") speed = 0.5
 
   return speed
+}
+
+export const getEnemyCoins = (size) => {
+  let coins = 1
+
+  if (size === "medium") coins = 3
+  if (size === "large") coins = 5
+
+  return coins;
 }
 
 export const handleEnemyCollision = (
@@ -95,7 +91,9 @@ export const handleEnemyCollision = (
       projectile.lifespan = 0
       enemy.hp -= 1
 
-      console.log(enemy.hp)
+      if (enemy.hp === 0) {
+        spawnCoins(enemy, getEnemyCoins(enemy.size))
+      }
     }
   })
 }

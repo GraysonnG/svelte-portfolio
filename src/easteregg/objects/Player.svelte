@@ -1,6 +1,6 @@
 <script>
   import { addEntity, handlePlayerCollision, player } from "../gamestate"
-import Arrow from "./Arrow.svelte"
+  import Arrow from "./Arrow.svelte"
 
 
   addEntity((props, dt) => {
@@ -10,9 +10,8 @@ import Arrow from "./Arrow.svelte"
 
       handlePlayerCollision(
         p,
-        props.map.tiles,
-        props.map.tileSize,
-        dt
+        props.coins,
+        props.map,
       )
 
       return p
