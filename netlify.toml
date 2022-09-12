@@ -5,20 +5,20 @@
 
 [[redirects]]
   from = "/home"
-  to = "/"
+  to = "/index.html"
   status = "200"
 
 [[redirects]]
   from = "/about"
-  to = "/"
+  to = "/index.html"
   status = "200"
 
 [[redirects]]
   from = "/contact"
-  to = "/"
+  to = "/index.html"
   status = "200"
 
 [[redirects]]
   from = "/projects"
-  to = "/"
+  to = "/index.html"
   status = "200"
