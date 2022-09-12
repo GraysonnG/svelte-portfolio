@@ -65,6 +65,31 @@
     color="white"
     quadrants={["bottom-left"]}
     duration="80s"
+    duration="40s"
+    />
+  <CircleEffect 
+    size="6.7em"
+    color="var(--color-highlight)"
+    quadrants={["bottom-right"]}
+    duration="20s"
+    />
+  <CircleEffect 
+    size="4.7em"
+    color="var(--color-highlight)"
+    quadrants={["top-right"]}
+    duration="20s"
+    />
+  <CircleEffect 
+    size="7.3em"
+    color="white"
+    quadrants={["top-left"]}
+    duration="80s"
+    />
+  <CircleEffect 
+    size="5.3em"
+    color="white"
+    quadrants={["bottom-left"]}
+    duration="80s"
     />
 </div>
 
@@ -90,6 +115,8 @@
     position: absolute;
     right: 15%;
     bottom: 15%;
+    opacity: .5;
+    pointer-events: none;
     opacity: .5;
     pointer-events: none;
   }
