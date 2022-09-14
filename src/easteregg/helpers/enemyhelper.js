@@ -124,13 +124,14 @@ export const pointWithinEnemy = (point, enemy, tileSize) => {
 }
 
 export const playerNearby = (playerPos, enemy, tileSize) => {
-  const deltaX = Math.abs(playerPos.x - enemy.position.x)
-  const deltaY = Math.abs(playerPos.y - enemy.position.y)
+  const deltaX = playerPos.x - enemy.position.x
+  const deltaY = playerPos.y - enemy.position.y
+  const length = Math.sqrt(deltaX * deltaX + deltaY * deltaY)
 
-  return deltaX < tileSize * 1.5 && deltaY < tileSize * 1.5
+  return length < 1
 }
 
-export const setRandomDirection = (enemy) => {
+export const moveRandomDirection = (enemy) => {
   const speed = getEnemySpeed(enemy.size)
   enemy.velocity.x = (Math.random() * speed) - speed / 2
   enemy.velocity.y = (Math.random() * speed) - speed / 2
@@ -151,16 +152,12 @@ export const doEnemyMovement = (enemy, player, map, dt) => {
   handleCollidingWithWall(enemy, map, dt)
 
   if (enemy.dTimer <= 0) {
-    setRandomDirection(enemy)
+    moveRandomDirection(enemy)
   }
 
-  
-
-
-  // if not playerNearby()
-  //   do random movement
-  // else
-  //   move towards the player
+  if (playerNearby(player.position, enemy, map.tileSize)) {
+    moveTowardsPlayer(enemy, player)
+  }
 }
 
 export const handleCollidingWithWall = (enemy, map, dt) => {
@@ -196,4 +193,17 @@ export const handleCollidingWithWall = (enemy, map, dt) => {
     })
   })
 
+}
+
+export const moveTowardsPlayer = (enemy, player) => {
+  const speed = getEnemySpeed(enemy.size)
+
+  const dx = player.position.x - enemy.position.x
+  const dy = player.position.y - enemy.position.y 
+  const dl = Math.sqrt(dx * dx + dy * dy)
+  const norm = { x: Math.round(dx / dl), y: (dy / dl) }
+
+  enemy.velocity.x = norm.x * speed
+  enemy.velocity.y = norm.y * speed
+  enemy.dTimer = 4
 }
