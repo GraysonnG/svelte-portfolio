@@ -2,23 +2,3 @@
   base = ""
   publish = "dist"
   command = "npm install && npm run build"
-
-[[redirects]]
-  from = "/home"
-  to = "/index.html"
-  status = "200"
-
-[[redirects]]
-  from = "/about"
-  to = "/index.html"
-  status = "200"
-
-[[redirects]]
-  from = "/contact"
-  to = "/index.html"
-  status = "200"
-
-[[redirects]]
-  from = "/projects"
-  to = "/index.html"
-  status = "200"
