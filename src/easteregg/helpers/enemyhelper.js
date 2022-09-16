@@ -110,6 +110,25 @@ export const handleEnemyCollision = (
       }
     }
   })
+
+  if (pointWithinEnemy(player.position, enemy, map.tileSize)) {
+    if (player.iTimer <= 0) {
+      player.hp -= 1
+      player.iTimer = 0.2
+    }
+    
+    // push the player away from monster
+    const dx = player.position.x - enemy.position.x
+    const dy = player.position.y - enemy.position.y
+    const dl = Math.sqrt(dx * dx + dy * dy)
+    const norm = {
+      x: -(dx / dl),
+      y: -(dy / dl),
+    }
+
+    player.velocity.x = norm.x * -3
+    player.velocity.y = norm.y * -3
+  }
 }
 
 export const pointWithinEnemy = (point, enemy, tileSize) => {

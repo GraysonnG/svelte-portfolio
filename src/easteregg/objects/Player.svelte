@@ -35,10 +35,20 @@
     player.velocity.y = +player.velocity.y.toFixed(6).substring(0, 4)
 
     handlePlayerCollision(player, coins, map)
+
+    hurt = player.iTimer > 0
+    player.iTimer -= dt
   })
+
+  $: hurt = false
 </script>
 
-<div class="player" style="--player-size: {$player.size}px;">
+<div 
+  class="player" 
+  style="
+    --color: {hurt ? "red" : "var(--color-highlight)"};
+    --player-size: {$player.size}px;
+  ">
   <Arrow />
 </div>
 
@@ -52,6 +62,7 @@
     width: var(--player-size);
     height: var(--player-size);
     transform: translate(-50%, -50%);
-    background-color: var(--color-highlight);
+    background-color: var(--color);
+    transition: background-color 300ms ease;
   }
 </style>

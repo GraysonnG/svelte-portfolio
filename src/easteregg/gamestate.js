@@ -14,7 +14,8 @@ export const player = writable({
     x: 0,
     y: 0,
   },
-  hp: 3,
+  hp: 5,
+  iTimer: 0,
   speed: 0.7,
   coins: 0,
   items: []

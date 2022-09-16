@@ -2,7 +2,6 @@
   import { fly } from "svelte/transition"
   import { 
     time, 
-    player, 
     map, 
     spawnProjectile, 
     gunTimer, 
@@ -20,6 +19,7 @@
   import StatsUI from "./objects/StatsUI.svelte";
   import { exitGameEasterEgg } from "../stores/main";
   import Minimap from "./objects/Minimap.svelte";
+  import GameOver from "./objects/GameOver.svelte";
 
   let keyDownListener;
   let keyUpListener;
@@ -63,7 +63,9 @@
 
     listeners.forEach(entity => {
       try {
-        entity.update($props, dt)
+        if ($props.gamestate && !$props.gamestate.paused) {
+          entity.update($props, dt)
+        }
       } catch (e) {
         console.error(e)
         cancelAnimationFrame(frame)
@@ -135,8 +137,9 @@
     <Player />
     <Map {...$map} />
   </div>
-  <StatsUI {...$player} level={$props.gamestate.level} />
   <Minimap />
+  <GameOver />
+  <StatsUI />
   <button class="close-button" on:click={exitGameEasterEgg}>
     <i class="fa fa-close" />
   </button>

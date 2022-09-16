@@ -2,17 +2,19 @@
   import Fps from "../FPS.svelte";
   import { addEntity } from "../gamestate";
 
-  export let hp;
-  export let coins;
-  export let level;
-
-  $: hpary = new Array(hp)
+  $: hp = 0
+  $: hpary = new Array(Math.max(hp, 0))
   $: maxEnemies = 0
   $: enemies = 0
+  $: coins = 0
+  $: level = 0
 
   addEntity(props => {
     maxEnemies = 10 + (props.gamestate.level * 2)
     enemies = props.enemies.list.length
+    hp = props.player.hp
+    coins = props.player.coins
+    level = props.gamestate.level
   })
 
 </script>
