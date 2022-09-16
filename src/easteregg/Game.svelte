@@ -20,6 +20,7 @@
   import { exitGameEasterEgg } from "../stores/main";
   import Minimap from "./objects/Minimap.svelte";
   import GameOver from "./objects/GameOver.svelte";
+  import GameStart from "./objects/GameStart.svelte";
 
   let keyDownListener;
   let keyUpListener;
@@ -60,6 +61,7 @@
 
   function update(dt) {
     runKeyActions($props, dt)
+    console.log($props)
 
     listeners.forEach(entity => {
       try {
@@ -138,6 +140,7 @@
     <Map {...$map} />
   </div>
   <Minimap />
+  <GameStart />
   <GameOver />
   <StatsUI />
   <button class="close-button" on:click={exitGameEasterEgg}>

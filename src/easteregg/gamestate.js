@@ -39,7 +39,8 @@ const enemiesInitialState = { list: [] }
 
 const gameInitialState = {
   level: 0,
-  paused: false,
+  paused: true,
+  starting: true,
 }
 
 
