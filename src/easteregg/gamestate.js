@@ -4,7 +4,7 @@ import { generateEnemies } from "./helpers/enemyhelper";
 import { generateMap } from "./helpers/dungeonhelper";
 
 let particleId = 0
-export const player = writable({
+const playerInitialState = {
   size: 32,
   position: {
     x: 1.5,
@@ -19,35 +19,39 @@ export const player = writable({
   speed: 0.7,
   coins: 0,
   items: []
-})
+}
 
-export const enemies = writable({
-  list: [],
-})
-export const projectiles = writable([])
-export const coins = writable([])
-export const ladder = writable({
+const ladderInitialState = {
   x: 0,
   y: 0,
-})
+}
 
-export const map = writable({
+const mapInitialState = {
   tiles: [
     [1,1,1],
     [1,2,1],
     [1,1,1],
   ],
   tileSize: 30 * 16
-})
+}
 
-export const time = writable(0)
-export const gunTimer = writable(0)
+const enemiesInitialState = { list: [] }
 
-export const gamestate = writable({
+const gameInitialState = {
   level: 0,
   paused: false,
-})
+}
 
+
+export const player = writable(deepCopy(playerInitialState))
+export const enemies = writable(deepCopy(enemiesInitialState))
+export const projectiles = writable([])
+export const coins = writable([])
+export const ladder = writable(deepCopy(ladderInitialState))
+export const map = writable(deepCopy(mapInitialState))
+export const time = writable(0)
+export const gunTimer = writable(0)
+export const gamestate = writable(deepCopy(gameInitialState))
 export const props = deriveObject({
   coins,
   enemies,
@@ -59,6 +63,10 @@ export const props = deriveObject({
   projectiles,
   time,
 })
+
+function deepCopy(obj) {
+  return JSON.parse(JSON.stringify(obj))
+}
 
 function deriveObject (obj) {
 	const keys = Object.keys(obj);
@@ -94,9 +102,15 @@ export const addEntity = (updatefn) => {
 }
 
 export const newGame = () => {
-  // set the player
-  // set the enemies
-  // set the map to a 1x1
+  player.set(deepCopy(playerInitialState))
+  enemies.set(deepCopy(enemiesInitialState))
+  projectiles.set([])
+  coins.set([])
+  ladder.set(deepCopy(ladderInitialState))
+  map.set(deepCopy(ladderInitialState))
+  time.set(0)
+  gunTimer.set(0)
+  gamestate.set(deepCopy(gameInitialState))
 
   startLevel()
 }
