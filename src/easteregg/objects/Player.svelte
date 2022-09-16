@@ -1,21 +1,40 @@
 <script>
   import { addEntity, handlePlayerCollision, player } from "../gamestate"
+  import { addKeyAction } from "../helpers/keyboardhelper";
   import Arrow from "./Arrow.svelte"
 
+  addKeyAction("Shift", ({ player }) => {
+    player.speed = 1.4
+  })
 
-  addEntity((props, dt) => {
-    player.update(p => {
-      p.position.x += dt * p.velocity.x
-      p.position.y += dt * p.velocity.y
+  addKeyAction("a", ({ player }) => {
+    player.velocity.x = -player.speed
+  })
 
-      handlePlayerCollision(
-        p,
-        props.coins,
-        props.map,
-      )
+  addKeyAction("d", ({ player }) => {
+    player.velocity.x = player.speed
+  })
 
-      return p
-    })
+  addKeyAction("w", ({ player }) => {
+    player.velocity.y = -player.speed
+  })
+
+  addKeyAction("s", ({ player }) => {
+    player.velocity.y = player.speed
+  })  
+
+  addEntity(({player, coins, map}, dt) => {
+    player.speed = 0.7
+    player.position.x += player.velocity.x * dt
+    player.position.y += player.velocity.y * dt
+
+    player.velocity.x *= 0.9
+    player.velocity.y *= 0.9
+
+    player.velocity.x = +player.velocity.x.toFixed(6).substring(0, 4)
+    player.velocity.y = +player.velocity.y.toFixed(6).substring(0, 4)
+
+    handlePlayerCollision(player, coins, map)
   })
 </script>
 

@@ -15,7 +15,7 @@ export const player = writable({
     y: 0,
   },
   hp: 3,
-  speed: 1,
+  speed: 0.7,
   coins: 0,
   items: []
 })

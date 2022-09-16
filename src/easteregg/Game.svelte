@@ -13,6 +13,7 @@
     enemies, 
     coins,
   } from "./gamestate";
+  import { runKeyActions, setKeyActionPressed } from "./helpers/keyboardhelper";
   import Player from "./objects/Player.svelte";
   import Map from "./Map.svelte";
   import { onDestroy, onMount } from "svelte";
@@ -27,41 +28,11 @@
 
   onMount(() => {
     keyDownListener = (e) => {
-      player.update(p => {
-        switch(e.key) {
-          case "a": 
-            p.velocity.x = -0.7
-            break;
-          case "d":
-            p.velocity.x = 0.7
-            break;
-          case "w":
-            p.velocity.y = -0.7
-            break;
-          case "s":
-            p.velocity.y = 0.7
-            break;
-        }
-
-        return p;
-      })
+      setKeyActionPressed(e.key, true)
     }
 
     keyUpListener = (e) => {
-      player.update(p => {
-        switch(e.key) {
-          case "w":
-          case "s":
-            p.velocity.y = 0
-            break;
-          case "d":
-          case "a": 
-            p.velocity.x = 0
-            break;
-        }
-
-        return p;
-      })
+      setKeyActionPressed(e.key, false)
     }
 
     clickListener = (e) => {
@@ -88,6 +59,8 @@
   })
 
   function update(dt) {
+    runKeyActions($props, dt)
+
     listeners.forEach(entity => {
       try {
         entity.update($props, dt)
