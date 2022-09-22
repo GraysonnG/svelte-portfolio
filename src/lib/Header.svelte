@@ -1,5 +1,4 @@
 <script>
-  // @ts-nocheck
   import { goToScreen, state } from "../stores/main";
   import { fade } from "svelte/transition";
   import { clickOutside } from "../utils/clickoutside";
@@ -9,7 +8,7 @@
 
   export let show = false
   
-  let underline
+  let pill
 
   const closeMenu = () => {
     state.update(oldstate => {
@@ -27,18 +26,26 @@
 
   const onMenuClick = (itemId) => {
     return () => {
+      if (pill) {
+        console.log(pill)
+        pill.classList.add("expand")
+        setTimeout(() => {
+          pill.classList.remove("expand")
+        }, 100);
+      }
+
       closeMenu()
       goToScreen(itemId)
     }
   }
 
   const moveToRect = (rect) => {
-    if (rect && underline) {
-      underline.style.left = `${rect.left}px`;
-      underline.style.width = `${rect.width}px`;
-      underline.style.height = `${rect.height}px`;
-      underline.style.top = `${rect.top}px`;
-      underline.style.opacity = `1`;
+    if (rect && pill) {
+      pill.style.left = `${rect.left}px`;
+      pill.style.width = `${rect.width}px`;
+      pill.style.height = `${rect.height}px`;
+      pill.style.top = `${rect.top}px`;
+      pill.style.opacity = `1`;
     }
   }
 
@@ -87,7 +94,7 @@
     }}
     in:fade={{duration: 1000, delay: 2000}}
     out:fade={{duration: 500, delay: 0}}>
-    <div class="underline" bind:this={underline}></div>
+    <div class="pill" bind:this={pill}></div>
     <ul on:mouseleave={moveUnderlineToSelected}>
       {#each data.pages as item (item.id)}
         <li
@@ -123,7 +130,7 @@
     z-index: 20000;
   }
 
-  .underline {
+  .pill {
     height: 2px;
     background-color: var(--color-highlight);
     position: fixed;
@@ -132,6 +139,10 @@
     z-index: 1;
     border-radius: 100px;
     pointer-events: none;
+  }
+
+  .pill:global(.expand) {
+    transform: scale(1.1);
   }
 
   ul {
@@ -196,7 +207,7 @@
       backdrop-filter: blur(2px);
     }
 
-    .underline {
+    .pill {
       display: none;
     }
 

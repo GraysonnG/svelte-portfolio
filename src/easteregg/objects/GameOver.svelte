@@ -52,12 +52,19 @@
   }
 
   button {
-    background-color: var(--color-highlight);
+    background-color: rgb(200,200,200);
     border: none;
-    padding: 0.25rem 1rem;
+    padding: 0.125em 1em;
     border-radius: 4px;
-    color: white;
+    color: rgb(0, 0, 0, 0.7);
+    font-weight: 400;
+    font-size: 2rem;
     box-shadow: 0 2px 3px black;
-    text-shadow: 0 2px 3px black;
+    transition: transform 250ms;
+  }
+
+  button:hover {
+    background-color: rgb(100,255,150);
+    transform: scale(1.1);
   }
 </style>
