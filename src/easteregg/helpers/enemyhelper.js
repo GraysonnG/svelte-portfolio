@@ -220,7 +220,7 @@ export const moveTowardsPlayer = (enemy, player) => {
   const dx = player.position.x - enemy.position.x
   const dy = player.position.y - enemy.position.y 
   const dl = Math.sqrt(dx * dx + dy * dy)
-  const norm = { x: Math.round(dx / dl), y: (dy / dl) }
+  const norm = { x: dx / dl, y: dy / dl }
 
   enemy.velocity.x = norm.x * speed
   enemy.velocity.y = norm.y * speed

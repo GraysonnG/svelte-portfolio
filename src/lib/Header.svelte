@@ -27,7 +27,6 @@
   const onMenuClick = (itemId) => {
     return () => {
       if (pill) {
-        console.log(pill)
         pill.classList.add("expand")
         setTimeout(() => {
           pill.classList.remove("expand")

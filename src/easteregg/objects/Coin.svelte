@@ -25,12 +25,8 @@
         y: dy / dl,
       }
 
-      console.log(norm)
-
       const mx = sineIn(norm.x)
       const my = sineIn(norm.y)
-
-      console.log({mx, my})
 
       coin.vx = norm.x * -2 * mx
       coin.vy = norm.y * -2 * mx
