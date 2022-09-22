@@ -146,6 +146,8 @@ export const spawnCoins = (enemy, amt = 1, area = 0.2) => {
         sy: enemy.position.y,
         x: enemy.position.x + (area / 2) - (Math.random() * area),
         y: enemy.position.y + (area / 2) - (Math.random() * area),
+        vx: 0,
+        vy: 0,
         dead: false,
       })
     }

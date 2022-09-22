@@ -81,6 +81,11 @@
     border-radius: 0.3rem;
     padding: 0.25em 1.5em;
     box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.5);
+    transition: transform 250ms;
+  }
+
+  a:hover {
+    transform: scale(1.1);
   }
 
   li::after, li::before {
@@ -120,7 +125,6 @@
   }
 
   li:hover {
-    transform: scale(1.025);
     background-color: rgba(160, 150, 255, 0.1) !important;
   }
 

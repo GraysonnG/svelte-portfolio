@@ -47,13 +47,36 @@
   }
 
   .content {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1em;
     background-color: rgba(0, 0, 0, 0.3);
-    border-radius: 0.5rem;
+    border: 1px solid rgb(255, 255, 255, 0.3);
     padding: 2rem;
+    box-shadow: 0 2rem 4rem rgb(0,0,0,0.3);
+  }
+
+  .content::before, .content::after {
+    content: "";
+    position: absolute;
+    width: 50px;
+    height: 50px;
+  }
+
+  .content::before {
+    left: -0.5rem;
+    top: -0.5rem;
+    border-top: 1px solid var(--color-highlight);
+    border-left: 1px solid var(--color-highlight);
+  }
+
+  .content::after {
+    right: -0.5rem;
+    bottom: -0.5rem;
+    border-bottom: 1px solid var(--color-highlight);
+    border-right: 1px solid var(--color-highlight);
   }
 
   .controls {
@@ -86,12 +109,18 @@
   }
 
   button {
-    background-color: var(--color-highlight);
+    background-color: rgb(100,255,150);
     border: none;
-    padding: 0.25rem 1rem;
+    padding: 0.125em 1em;
     border-radius: 4px;
-    color: white;
+    color: rgb(0, 100, 0);
+    font-weight: 400;
+    font-size: 2rem;
     box-shadow: 0 2px 3px black;
-    text-shadow: 0 2px 3px black;
+    transition: transform 250ms;
+  }
+
+  button:hover {
+    transform: scale(1.1);
   }
 </style>

@@ -1,13 +1,43 @@
 <script>
+  import { sineIn } from "svelte/easing";
   import { addEntity } from "../gamestate";
+
   
   export let coin;
   let left = 0
   let top = 0
 
-  addEntity((props) => {
-    left = coin.x * props.map.tileSize
-    top = coin.y * props.map.tileSize
+  addEntity(({ map, player }, dt) => {
+    coin.x += coin.vx * dt
+    coin.y += coin.vy * dt
+
+    left = coin.x * map.tileSize
+    top = coin.y * map.tileSize
+
+    const ml = 0.25
+    const dx = coin.x - player.position.x
+    const dy = coin.y - player.position.y
+    const dl = Math.sqrt(dx * dx + dy * dy)
+
+    if (dl < ml) {
+      const norm = {
+        x: dx / dl,
+        y: dy / dl,
+      }
+
+      console.log(norm)
+
+      const mx = sineIn(norm.x)
+      const my = sineIn(norm.y)
+
+      console.log({mx, my})
+
+      coin.vx = norm.x * -2 * mx
+      coin.vy = norm.y * -2 * mx
+    } else {
+      coin.vy *= 0.9
+      coin.vx *= 0.9
+    }
   })
 </script>
 

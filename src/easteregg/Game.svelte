@@ -61,7 +61,6 @@
 
   function update(dt) {
     runKeyActions($props, dt)
-    console.log($props)
 
     listeners.forEach(entity => {
       try {
