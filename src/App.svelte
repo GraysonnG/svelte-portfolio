@@ -165,6 +165,23 @@
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
   }
 
+  :global(span.ripple) {
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    animation: ripple 600ms linear;
+    background-color: rgb(255, 255, 255, 0.7);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  @keyframes ripple {
+    to {
+      transform: scale(4);
+      opacity: 0;
+    }
+  }
+
   @media screen and (max-width: 820px) {
     main {
       width: calc(100vw - 2em);
