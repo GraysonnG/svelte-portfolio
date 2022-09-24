@@ -5,6 +5,7 @@
   import { data } from "../content/header";
   import { onMount } from "svelte";
   import { isMobile } from "../utils/mobilehelper";
+  import { ripple } from "../effects/ripple";
 
   export let show = false
   
@@ -26,13 +27,6 @@
 
   const onMenuClick = (itemId) => {
     return () => {
-      if (pill) {
-        pill.classList.add("expand")
-        setTimeout(() => {
-          pill.classList.remove("expand")
-        }, 100);
-      }
-
       closeMenu()
       goToScreen(itemId)
     }
@@ -98,6 +92,7 @@
       {#each data.pages as item (item.id)}
         <li
           class:selected={$state.screenName === item.id}
+          use:ripple
           on:click={onMenuClick(item.id)}
           on:mouseenter={moveUnderline}
           data-id={item.id}
@@ -140,10 +135,6 @@
     pointer-events: none;
   }
 
-  .pill:global(.expand) {
-    transform: scale(1.1);
-  }
-
   ul {
     position: relative;
     font-size: 2em;
@@ -157,6 +148,8 @@
   }
 
   li {
+    position: relative;
+    overflow: hidden;
     cursor: pointer;
     border-bottom: 2px solid transparent;
     transition: all 500ms;

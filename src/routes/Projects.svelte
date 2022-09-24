@@ -70,8 +70,8 @@
 
   a {
     position: absolute;
-    right: 0.5em;
-    bottom: 0.5em;
+    right: 0.25em;
+    bottom: 0.25em;
     display: inline-block;
     background-color: var(--color-highlight);
     color: white;
@@ -132,8 +132,8 @@
     color: var(--color-highlight);
   }
 
-  li:active {
-    transform: scale(1.013);
+  li > div {
+    position: relative;
   }
 
   img {
