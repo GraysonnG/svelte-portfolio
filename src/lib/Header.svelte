@@ -61,8 +61,16 @@
     }
   }
 
+  let resizeTimeout
+
   window.onresize = () => {
-    moveUnderlineToSelected()
+    if (resizeTimeout) {
+      clearTimeout(resizeTimeout)
+    }
+
+    resizeTimeout = setTimeout(() => {
+      moveUnderlineToSelected()
+    }, 270)
   }
 
   onMount(() => {
