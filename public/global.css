@@ -111,6 +111,8 @@ select {
 
 :root {
   --color-highlight: rgba(160, 150, 255);
+  --color-highlight-05: rgb(160, 150, 255, 0.5);
+  --color-highlight-03: rgb(160, 150, 255, 0.3);
 }
 
 ::selection, ::-moz-selection, ::-webkit-selection {
