@@ -6,13 +6,14 @@
 <section transition:fly={{duration: 1000, x: -1000}}>
   <ul>
     {#each data.projects as project, index}
-      <li transition:fly={{duration: 300, delay: 750 + (index * 200), x: -50}}>
-        <img src={project.img} alt="" />
-        <div>
-          <h3>{project.title}</h3>
-          <p>{project.description}</p>
-          <a href={project.link} target="_blank">Go</a>
-        </div>
+      <li transition:fly={{duration: 300, delay: 750 + (index * 200), x: 50}}>
+        <a href={project.link} target="_blank">
+          <img src={project.img} alt="" />
+          <div>
+            <h3>{project.title}</h3>
+            <p>{project.description}</p>
+          </div>
+        </a>
       </li>
     {/each}
   </ul>
@@ -22,8 +23,10 @@
   section {
     position: absolute;
     left: 0;
-    top: calc(50% - 20em);
+    top: 50%;
     width: 100%;
+    transform: translateY(-50%);
+    overflow-x: auto;
   }
 
   ul {
@@ -33,208 +36,91 @@
     padding: 0;
     display: flex;
     gap: 1em;
-    flex-direction: column;
+    flex-direction: row;
+    margin-inline: 1em;
+    margin-block: 3em;
+    width: fit-content;
   }
 
   li {
+    box-sizing: border-box;
     position: relative;
-    height: 16vh;
-    max-width: 60rem;
-    aspect-ratio: 3/2;
-    border: 1px solid transparent;
-    transition: all 500ms;
-    background-color: transparent;
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
-    border-radius: 0.5em;
-    color: white;
-    display: flex;
-    gap: 1em;
-    position: relative;
-    padding: 0.33em;
-  }
-
-  div {
+    height: 50vh;
+    width: 21vh;
+    min-width: 21vh;
+    border-radius: 0.3em;
     overflow: hidden;
-    font-size: max(1em, 1rem);
+    box-shadow: 0 0 1em rgb(0, 0, 0, .7), 0 1em 2em hwb(248 19% 69%);
+    transition: all 500ms;
+    box-sizing: border-box;
   }
 
-  li > div > :global(div) {
-    color: white;
+  li:hover {
+    box-shadow: 
+      0 0 1em var(--color-highlight), 
+      0 0 0.25em white;
+    z-index: 2;
   }
 
-  p {
-    width: 100%;
-    display: inline-block;
-    color: rgba(255, 255, 255, 0.7);
-  }
-
-  a {
-    position: absolute;
-    right: 0.25em;
-    bottom: 0.25em;
-    display: inline-block;
-    background-color: var(--color-highlight);
-    color: white;
-    font-weight: 100;
-    text-decoration: none;
-    text-transform: uppercase;
-    border-radius: 0.3rem;
-    padding: 0.25em 1.5em;
-    box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.5);
-    transition: transform 250ms;
-  }
-
-  a:hover {
+  li:hover img {
     transform: scale(1.1);
-  }
-
-  li::after, li::before {
-    content: "";
-    position: absolute;
   }
 
   li::after {
     content: "";
+    width: 100%;
+    height: 60%;
+    background: linear-gradient(transparent, black);
     position: absolute;
-    height: 25%;
-    aspect-ratio: 1/1;
-    border-right: 2px solid var(--color-highlight);
-    border-top: 2px solid var(--color-highlight);
-    transition: all 250ms;
-    opacity: 0;
-
-    top: calc(50%);
-    transform: translateX(0) translateY(-50%) rotate(45deg) scale(.5);
-    right: 50%;
+    left: 0;
+    bottom: 0;
+    z-index: -1;
   }
 
-  li::before {
-    content: "";
-    position: absolute;
-    height: 50%;
-    aspect-ratio: 1/1;
-    border-right: 2px solid transparent;
-    border-bottom: 2px solid var(--color-highlight);
-    transition: all 250ms;
-    opacity: 0;
-
-    transform-origin: bottom right;
-    top: calc(50%);
-    transform: translateX(0) translateY(calc(-100% + 1px)) scale(.5);
-    right: 50%;
-  }
-
-  li:hover {
-    background-color: rgba(160, 150, 255, 0.1) !important;
-  }
-
-  li:hover > div > :global(div) {
-    color: var(--color-highlight);
-  }
-
-  li > div {
-    position: relative;
+  li:last-child {
+    margin-right: 1em;
   }
 
   img {
-    position: relative;
-    border-radius: 0.3rem;
-    overflow: hidden;
+    display: block;
+    position: absolute;
+    width: 100%;
     height: 100%;
-    aspect-ratio: 1/1;
     object-fit: cover;
-    z-index: 2;
-    flex-shrink: 0;
+    z-index: -1;
+    transition: all 500ms;
   }
 
-  @media screen and (max-width: 600px) {
-    section {
-      top: 50%;
-      max-width: 100%;
-      padding: 0 2em;
-      transform: translateY(-50%);
-    }
-
-    a {
-      bottom: 0.25;
-      right: 0.25;
-    }
-
-    li {
-      height: unset;
-      aspect-ratio: 6/1;
-    }
-
-    img {
-      aspect-ratio: 9/16;
-    }
-
-    div {
-      font-size: 1em;
-    }
-
-    li:hover {
-      transform: scale(1.02);
-    }
-
-    li:active {
-      transform: scale(1.01);
-    }
+  div {
+    position: absolute;
+    padding: 0.5em;
+    bottom: 0;
+    font-size: max(1em, 11pt);
   }
 
-  @keyframes pulse {
-    from {
-      background-color: transparent;
-    }
-
-    to {
-      background-color: rgba(255, 255, 255, 0.025);
-    }
+  div * {
+    text-align: center;
   }
 
-  @keyframes pointer-arrow {
-    0% {
-      opacity: 0;
-      top: calc(50%);
-      transform: translateX(0) translateY(-50%) rotate(45deg) scale(.5);
-      right: 50%;
-    }
-
-    50%, 90% {
-      top: calc(50%);
-      transform: translateX(-1em) translateY(-50%) rotate(45deg) scale(1);
-      right: 0;
-      opacity: 1;
-    }
-
-    100% {
-      top: calc(50%);
-      transform: translateX(3em) translateY(-50%) rotate(45deg) scale(1);
-      right: 0;
-      opacity: 0;
-    }
+  div p {
+    font-size: 0.85em;
+    margin-top: 1em;
+    line-clamp: 3;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    overflow: hidden;
+    color: rgb(255 255 255/0.7);
+    transition: all 500ms;
   }
 
-  @keyframes pointer-line {
-    0% {
-      opacity: 0;
-      top: calc(50%);
-      transform: translateX(0) translateY(calc(-100% + 1px)) scale(.5);
-      right: 50%;
-    }
+  li:hover div p {
+    -webkit-line-clamp: 10;
+  }
 
-    50%, 90% {
-      top: calc(50%);
-      transform: translateX(calc(-1em + 0.5em - 3px)) translateY(calc(-100% + 1px)) scale(1);
-      right: 0;
-      opacity: 1;
-    }
-
-    100% {
-      top: calc(50%);
-      transform: translateX(calc(3em + 0.5em - 3px)) translateY(calc(-100% + 1px)) scale(1);
-      right: 0;
-      opacity: 0;
-    }
+  a {
+    text-decoration: none;
+    color: white;
   }
 </style>

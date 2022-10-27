@@ -141,6 +141,8 @@
     z-index: 1;
     border-radius: 100px;
     pointer-events: none;
+    box-shadow: 0 0 3em var(--color-highlight-05), 0 0 1em var(--color-highlight), 0 0 0.25em white;
+    border: 1px solid rgb(255 255 255/0.6); 
   }
 
   ul {
