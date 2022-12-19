@@ -63,7 +63,7 @@
   }
 
   li:hover img {
-    transform: scale(1.1);
+    transform: scale(1.05);
   }
 
   li::after {
@@ -88,7 +88,7 @@
     height: 100%;
     object-fit: cover;
     z-index: -1;
-    transition: all 500ms;
+    transition: all 600ms;
   }
 
   div {
