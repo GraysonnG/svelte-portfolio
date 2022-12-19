@@ -1,6 +1,6 @@
 import infiniteSpire from "../assets/infinite-spire.jpg";
-import wbiw from "../assets/wbiw-thumbnail.jpg";
-import emts from "../assets/electro-mts-screenshot.png";
+import wbiw from "../assets/wbiw.png";
+import emts from "../assets/electro_mts.png";
 
 export const data = {
   title: "My Projects",
@@ -14,7 +14,7 @@ export const data = {
     },
     {
       title: "Infinite Spire",
-      description: "This is an expansion mod for Slay the Spire that adds lots of new content: New Relics, Cards, Events, Bosses.",
+      description: "This is an expansion mod for the game Slay the Spire with over 60,000 subscribers. It adds lots of new content: New Relics, Cards, Events, Bosses.",
       img: infiniteSpire,
       link: "https://steamcommunity.com/sharedfiles/filedetails/?id=1610128058",
       delay: 0,

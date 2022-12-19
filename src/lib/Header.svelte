@@ -128,6 +128,11 @@
     position: relative;
   }
 
+  header:hover .pill {
+    box-shadow: 0 0 3em var(--color-highlight-05), 0 0 1em var(--color-highlight), 0 0 0.25em white;
+    border: 1px solid rgb(255 255 255/0.6);
+  }
+
   button {
     z-index: 20000;
   }
@@ -136,13 +141,13 @@
     height: 2px;
     background-color: var(--color-highlight);
     position: fixed;
-    transition: all 200ms;
+    transition: all 200ms, border 500ms, box-shadow .6s;
     opacity: 0;
     z-index: 1;
     border-radius: 100px;
     pointer-events: none;
-    box-shadow: 0 0 3em var(--color-highlight-05), 0 0 1em var(--color-highlight), 0 0 0.25em white;
-    border: 1px solid rgb(255 255 255/0.6); 
+    border: 1px solid transparent;
+    box-shadow: 0 0 3em hwb(248 19% 69%);
   }
 
   ul {
