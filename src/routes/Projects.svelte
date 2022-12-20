@@ -1,9 +1,12 @@
 <script>
   import { fly } from "svelte/transition";
   import { data } from "../content/projects";
+  import { isMobile } from "../utils/mobilehelper";
+
+  const mobile = isMobile()
 </script>
 
-<section transition:fly={{duration: 1000, x: -1000}}>
+<section class:mobile transition:fly={{duration: 1000, x: -1000}}>
   <ul>
     {#each data.projects as project, index}
       <li transition:fly={{duration: 300, delay: 750 + (index * 200), x: 50}}>
@@ -14,6 +17,7 @@
             <p>{project.description}</p>
           </div>
         </a>
+        <img class="glow" src={project.img} alt="" />
       </li>
     {/each}
   </ul>
@@ -26,6 +30,9 @@
     top: 50%;
     width: 100%;
     transform: translateY(-50%);
+  }
+
+  .mobile {
     overflow-x: auto;
   }
 
@@ -49,16 +56,11 @@
     width: 21vh;
     min-width: 21vh;
     border-radius: 0.3em;
-    overflow: hidden;
-    box-shadow: 0 0 1em rgb(0, 0, 0, .7), 0 1em 2em hwb(248 19% 69%);
     transition: all 500ms;
     box-sizing: border-box;
   }
 
   li:hover {
-    box-shadow: 
-      0 0 1em var(--color-highlight), 
-      0 0 0.25em white;
     z-index: 2;
   }
 
@@ -75,6 +77,7 @@
     left: 0;
     bottom: 0;
     z-index: -1;
+    border-radius: 0.3em;
   }
 
   li:last-child {
@@ -89,6 +92,19 @@
     object-fit: cover;
     z-index: -1;
     transition: all 600ms;
+  }
+
+  .glow {
+    z-index: -2;
+    filter: blur(2em);
+    border-radius: 0.3em;
+    opacity: 0;
+  }
+
+  li:hover .glow {
+    transform: scale(1);
+    filter: blur(.75em);
+    opacity: 1;
   }
 
   div {
@@ -120,7 +136,14 @@
   }
 
   a {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
     text-decoration: none;
     color: white;
+    border-radius: 0.3em;
+    overflow: hidden;
   }
 </style>
