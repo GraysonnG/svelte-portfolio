@@ -58,6 +58,7 @@
   i:hover::before {
     color: var(--color-highlight);
     scale: 1.5;
+    text-shadow: 0 0 0.5em var(--color-highlight);
   }
 
   @keyframes zoomIn {
