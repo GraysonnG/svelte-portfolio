@@ -3,13 +3,13 @@
   import { data } from "../content/projects";
   import { isMobile } from "../utils/mobilehelper";
 
-  const mobile = isMobile()
+  const mobile = isMobile();
 </script>
 
-<section class:mobile transition:fly={{duration: 1000, x: -1000}}>
+<section class:mobile transition:fly={{ duration: 1000, x: -1000 }}>
   <ul>
     {#each data.projects as project, index}
-      <li transition:fly={{duration: 300, delay: 750 + (index * 200), x: 50}}>
+      <li transition:fly={{ duration: 300, delay: 750 + index * 200, x: 50 }}>
         <a href={project.link} target="_blank">
           <img src={project.img} alt="" />
           <div>
@@ -65,6 +65,7 @@
   }
 
   li:hover img {
+    object-fit: cover;
     transform: scale(1.05);
   }
 
@@ -103,7 +104,7 @@
 
   li:hover .glow {
     transform: scale(1);
-    filter: blur(.75em);
+    filter: blur(0.75em);
     opacity: 1;
   }
 
